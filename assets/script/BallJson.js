@@ -21,23 +21,12 @@ cc.Class({
         spriteAtlas: {
             default: null,
             type: cc.SpriteAtlas
-        }
+        },
 
-        // foo: {
-        //     // ATTRIBUTES:
-        //     default: null,        // The default value will be used only when the component attaching
-        //                           // to a node for the first time
-        //     type: cc.SpriteFrame, // optional, default is typeof default
-        //     serializable: true,   // optional, default is true
-        // },
-        // bar: {
-        //     get () {
-        //         return this._bar;
-        //     },
-        //     set (value) {
-        //         this._bar = value;
-        //     }
-        // },
+        musicNode: {
+            default: null,
+            type: cc.Node
+        }
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -90,8 +79,10 @@ cc.Class({
             case BallState.Invalid:
                 break;
             case BallState.MissState:
+                this.state = BallState.MissState;
                 break;
             case BallState.SuccessState:
+                this.state = BallState.SuccessState;
                 break;
             case BallState.RunState:
                 
@@ -119,12 +110,35 @@ cc.Class({
         }
         this.node.setPosition(this.node.position.x- dt*1000*0.42,this.node.position.y);
                 // console.log("this.time:"+this.time+",this.node.position:"+this.node.position)
+
+        if(this.node.position.x>-485&&this.node.position.x<-475){
+            switch(this.tone){
+                case "B":
+                    console.log("B");
+                    // this.musicNode.getComponent("MusicUtil").playB();
+                    this.setState(BallState.SuccessState);
+                    break;
+                case "T":
+                console.log("T");
+                    // this.musicNode.getComponent("MusicUtil").playT();
+                    this.setState(BallState.SuccessState);
+                    break;
+                case "S":
+
+                console.log("S");
+                    // this.musicNode.getComponent("MusicUtil").playS();
+                    this.setState(BallState.SuccessState);
+                    break;
+            }
+        }
+
         switch (this.state) {
             case BallState.RunState:
                 
                 break;
             case BallState.SuccessState:
                 this.node.active = false;
+                this.musicNode.getComponent("MusicUtil").playTone(this.tone);
                 break;
             case BallState.MissState:
                 break;

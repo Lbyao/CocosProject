@@ -59,6 +59,20 @@ cc.Class({
         this.sAudioSource.pause();
     },
 
+    playTone: function(tone) {
+        switch(tone){
+            case "B":
+                this.playB();
+                break;
+            case "T":
+                this.playT();
+                break;
+            case "S":
+                this.playS();
+                break;
+        }
+    },
+
     start () {
 
     },
