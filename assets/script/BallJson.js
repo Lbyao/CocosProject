@@ -23,11 +23,11 @@ cc.Class({
             default: null,
             type: cc.SpriteAtlas
         },
-
         musicNode: {
             default: null,
             type: cc.Node
         }
+        
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -36,12 +36,9 @@ cc.Class({
         this.runTime = 0;
         this.cha = 0;
         global.event.on("click_drum",this.clickDrum.bind(this));
+        this.ballNodeList = [];
 
-        // cc.loader.load(cc.url.raw("resources/audio/bgm_easy.wav"),callback());
-
-        // cc.loader.loadRes("json/json_easy",function (err,jsonAssest) {
-        //     stringJson(JSON.stringify(jsonAssest))
-        // });   
+        
     },
     
     start () {
@@ -71,6 +68,7 @@ cc.Class({
         // let spriteFrame = this.spriteAtlas.getSpriteFrame(this.color);
         // this.node.spriteFrame  = spriteFrame;
         this.setState(BallState.RunState)
+        this.ballNodeList.push(this.node);
     },
 
     setState (state) {
@@ -97,10 +95,6 @@ cc.Class({
 
         return state;
     },
-
-    setBallColor(){
-        
-    },
     // update中的方法每一帧都会执行
     update (dt) {
         this.runTime += dt;
@@ -119,9 +113,6 @@ cc.Class({
         if(this.node.position.x<-485){
             this.setState(BallState.MissState);
         }
-                // console.log("this.time:"+this.time+",this.node.position:"+this.node.position)
-
-        
 
         switch (this.state) {
             case BallState.RunState:
@@ -130,6 +121,8 @@ cc.Class({
             case BallState.SuccessState:
                 this.node.active = false;
                 // this.musicNode.getComponent("MusicUtil").playTone(this.tone);
+
+                global.event.fire("ball_grade","0");
                 break;
             case BallState.MissState:
                 break;
@@ -141,35 +134,26 @@ cc.Class({
     },
 
     clickDrum (data){
-        // console.log(data+",this.node.position.x:"+this.node.position.x);
         if(this.node.position.x>-485 && this.node.position.x<-420){
             switch(data){
                 case "B":
-                    // console.log("B");
-                    // this.musicNode.getComponent("MusicUtil").playB();
                     this.setState(BallState.SuccessState);
                     break;
                 case "T":
-                    // console.log("T");
-                    // this.musicNode.getComponent("MusicUtil").playT();
                     this.setState(BallState.SuccessState);
                     break;
                 case "S":
-                    // console.log("S");
-                    // this.musicNode.getComponent("MusicUtil").playS();
                     this.setState(BallState.SuccessState);
                     break;
             }
         }
+    },
+
+    onDestroy (){
+        for (let i = 0; i< this.ballNodeList.length; i++) {          
+            this.ballNodeList[i].active = false
+        }
     }
 });
-
-function stringJson(stringJson) {
-    console.log(stringJson); 
-} 
-
-function callback(){
-    console.log("返回");
-}
 
 

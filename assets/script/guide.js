@@ -16,7 +16,6 @@ cc.Class({
             default: null,
             type: cc.Prefab
         },
-
         topNode: {
             default:null,
             type : cc.Node
@@ -42,11 +41,18 @@ cc.Class({
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
+    //    this.play();
+    //    console.log("in newBall"+ballInfo)
+    //    this.newBall(ballInfo,speed);
+    },
+
+    startGame(){
         var ballInfo;
         var speed;
         var that = this;
-        this.musicNode.getComponent("MusicUtil").playMain();
-        cc.loader.loadRes("json/json_easy",function (err,jsonAssest) {
+        this.position = 0;
+        // this.musicNode.getComponent("MusicUtil").playMain();
+        cc.loader.loadRes("json/json_difficulty",function (err,jsonAssest) {
             if (err) {
                 console.log(err);
                 return;
@@ -56,12 +62,10 @@ cc.Class({
             console.log("ballinfo="+ballInfo+",speed:"+speed)
             that.newBall(ballInfo,speed); 
        });
+    },
 
-       
-
-    //    this.play();
-    //    console.log("in newBall"+ballInfo)
-    //    this.newBall(ballInfo,speed);
+    resetGame () {
+        this.startGame();
     },
 
     newBall(ballInfo,speed) {
@@ -70,37 +74,37 @@ cc.Class({
         console.log(length);
         var i=0;
         var that = this;
-        var position = this.endNode.position.x;
-        console.log("endNode:" + position)
+        this.position = this.endNode.position.x;
+        // console.log("endNode:" + position)
         for(let i=0;i<length;i++){
             let datas = {
-                "position":  position,
+                "position":  this.position,
                 "ballColor": ballInfo[i].tone,
                 "interval": this.topNode.position.x - this.endNode.position.x
             };
            
-            console.log("position:"+position);
+            // console.log("position:"+position);
             switch(ballInfo[i].tone){
                 case "B":
                     ball = cc.instantiate(that.ballPrefab);
-                    ball.setPosition(position,this.bottomNode.position.y);
+                    ball.setPosition(this.position,this.bottomNode.position.y);
                     ball.parent = that.node;
                     ball.getComponent("BallJson").initData(datas);
                     break;
                 case "T":
                     ball = cc.instantiate(that.ballPrefab);
-                    ball.setPosition(position,that.midNode.position.y);
+                    ball.setPosition(this.position,that.midNode.position.y);
                     ball.parent = that.node;
                     ball.getComponent("BallJson").initData(datas);
                     break;
                 case "S":
                     ball = cc.instantiate(that.ballPrefab);
-                    ball.setPosition(position,that.topNode.position.y);
+                    ball.setPosition(this.position,that.topNode.position.y);
                     ball.parent = that.node;
                     ball.getComponent("BallJson").initData(datas);
                     break;
             }
-            position = (1000*60.0*0.48)/(speed*ballInfo[i].note*ballInfo[i].power*ballInfo[i].special)+position;
+            this.position = (1000*60.0*0.48)/(speed*ballInfo[i].note*ballInfo[i].power*ballInfo[i].special)+this.position;
         }
     },
 
@@ -111,6 +115,10 @@ cc.Class({
         }
 
         return length;
+    },
+
+    showToast(){
+        
     },
 
     start () {
