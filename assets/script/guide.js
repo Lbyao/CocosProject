@@ -45,6 +45,7 @@ cc.Class({
         var ballInfo;
         var speed;
         var that = this;
+        this.musicNode.getComponent("MusicUtil").playMain();
         cc.loader.loadRes("json/json_easy",function (err,jsonAssest) {
             if (err) {
                 console.log(err);
@@ -56,7 +57,7 @@ cc.Class({
             that.newBall(ballInfo,speed); 
        });
 
-       this.musicNode.getComponent("MusicUtil").playMain();
+       
 
     //    this.play();
     //    console.log("in newBall"+ballInfo)
@@ -99,7 +100,7 @@ cc.Class({
                     ball.getComponent("BallJson").initData(datas);
                     break;
             }
-            position = (1000*60.0*0.42)/(speed*ballInfo[i].note*ballInfo[i].power*ballInfo[i].special)+position;
+            position = (1000*60.0*0.48)/(speed*ballInfo[i].note*ballInfo[i].power*ballInfo[i].special)+position;
         }
     },
 

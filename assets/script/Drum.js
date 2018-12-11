@@ -7,7 +7,7 @@
 // Learn life-cycle callbacks:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/en/scripting/life-cycle-callbacks.html
-
+import global from "./global"
 cc.Class({
     extends: cc.Component,
 
@@ -54,6 +54,7 @@ cc.Class({
         var that = this;
 
         this.bpNode.on(cc.Node.EventType.TOUCH_START,function() {
+            global.event.fire("click_drum", "B");
             this.musicNode.getComponent("MusicUtil").playB();
             this.bpNode.opacity = 255;
         },this);
@@ -65,6 +66,7 @@ cc.Class({
         },this);
 
         this.spNode.on(cc.Node.EventType.TOUCH_START,function() {
+            global.event.fire("click_drum", "S");
             this.musicNode.getComponent("MusicUtil").playS();
             this.spNode.opacity = 255;
         },this);
@@ -76,6 +78,7 @@ cc.Class({
         },this);
 
         this.tpNode.on(cc.Node.EventType.TOUCH_START,function() {
+            global.event.fire("click_drum", "T");
             this.musicNode.getComponent("MusicUtil").playT();
             this.tpNode.opacity = 255;
         },this);

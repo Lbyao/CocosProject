@@ -7,6 +7,7 @@
 // Learn life-cycle callbacks:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/en/scripting/life-cycle-callbacks.html
+import global from "./global"
 const BallState = {
     Invalid: -1,
     MissState : 0,
@@ -34,6 +35,8 @@ cc.Class({
         this.state = BallState.Invalid;
         this.runTime = 0;
         this.cha = 0;
+        global.event.on("click_drum",this.clickDrum.bind(this));
+
         // cc.loader.load(cc.url.raw("resources/audio/bgm_easy.wav"),callback());
 
         // cc.loader.loadRes("json/json_easy",function (err,jsonAssest) {
@@ -79,6 +82,7 @@ cc.Class({
             case BallState.Invalid:
                 break;
             case BallState.MissState:
+                console.log("miss")
                 this.state = BallState.MissState;
                 break;
             case BallState.SuccessState:
@@ -103,34 +107,21 @@ cc.Class({
         // console.log(dt+"this.s:"+this.s)
         // console.log("this.node.position.x:"+this.node.position.x)
         // this.node.position.x = this.node.position.x ;
-        if(this.node.position.x>635||this.node.position.x<-635){
+        if(this.node.position.x<-635){
+            this.node.active = false;
+        }
+        if(this.node.position.x>635){
             this.node.opacity = 0;
         }else{
             this.node.opacity = 255;
         }
-        this.node.setPosition(this.node.position.x- dt*1000*0.42,this.node.position.y);
+        this.node.setPosition(this.node.position.x- dt*1000*0.48,this.node.position.y);
+        if(this.node.position.x<-485){
+            this.setState(BallState.MissState);
+        }
                 // console.log("this.time:"+this.time+",this.node.position:"+this.node.position)
 
-        if(this.node.position.x>-485&&this.node.position.x<-475){
-            switch(this.tone){
-                case "B":
-                    console.log("B");
-                    // this.musicNode.getComponent("MusicUtil").playB();
-                    this.setState(BallState.SuccessState);
-                    break;
-                case "T":
-                console.log("T");
-                    // this.musicNode.getComponent("MusicUtil").playT();
-                    this.setState(BallState.SuccessState);
-                    break;
-                case "S":
-
-                console.log("S");
-                    // this.musicNode.getComponent("MusicUtil").playS();
-                    this.setState(BallState.SuccessState);
-                    break;
-            }
-        }
+        
 
         switch (this.state) {
             case BallState.RunState:
@@ -138,7 +129,7 @@ cc.Class({
                 break;
             case BallState.SuccessState:
                 this.node.active = false;
-                this.musicNode.getComponent("MusicUtil").playTone(this.tone);
+                // this.musicNode.getComponent("MusicUtil").playTone(this.tone);
                 break;
             case BallState.MissState:
                 break;
@@ -148,6 +139,29 @@ cc.Class({
         //调整小球的位置
         // this.position(dt)
     },
+
+    clickDrum (data){
+        // console.log(data+",this.node.position.x:"+this.node.position.x);
+        if(this.node.position.x>-485 && this.node.position.x<-420){
+            switch(data){
+                case "B":
+                    // console.log("B");
+                    // this.musicNode.getComponent("MusicUtil").playB();
+                    this.setState(BallState.SuccessState);
+                    break;
+                case "T":
+                    // console.log("T");
+                    // this.musicNode.getComponent("MusicUtil").playT();
+                    this.setState(BallState.SuccessState);
+                    break;
+                case "S":
+                    // console.log("S");
+                    // this.musicNode.getComponent("MusicUtil").playS();
+                    this.setState(BallState.SuccessState);
+                    break;
+            }
+        }
+    }
 });
 
 function stringJson(stringJson) {
