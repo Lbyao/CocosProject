@@ -7,7 +7,7 @@
 // Learn life-cycle callbacks:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/en/scripting/life-cycle-callbacks.html
-
+import global from "./global"
 cc.Class({
     extends: cc.Component,
 
@@ -31,11 +31,13 @@ cc.Class({
     },
     // 重新
     resetGame () {
+        cc.log("click")
+        this.musicNode.getComponent("MusicUtil").rewindMain();
         this.guideNode.getComponent("guide").resetGame();
     },
     // 开始
     startGame () {
-        this.musicNode.getComponent("MusicUtil").playMain();
+        this.musicNode.getComponent("MusicUtil").playTone("main");
         this.guideNode.getComponent("guide").startGame();
     },
     // LIFE-CYCLE CALLBACKS:

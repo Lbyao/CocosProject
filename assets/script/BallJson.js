@@ -12,7 +12,8 @@ const BallState = {
     Invalid: -1,
     MissState : 0,
     SuccessState: 1,
-    RunState : 2
+    RunState : 2,
+    DeadState : 3
 }
 cc.Class({
     extends: cc.Component,
@@ -22,10 +23,6 @@ cc.Class({
         spriteAtlas: {
             default: null,
             type: cc.SpriteAtlas
-        },
-        musicNode: {
-            default: null,
-            type: cc.Node
         }
         
     },
@@ -36,13 +33,6 @@ cc.Class({
         this.runTime = 0;
         this.cha = 0;
         global.event.on("click_drum",this.clickDrum.bind(this));
-        this.ballNodeList = [];
-
-        
-    },
-    
-    start () {
-
     },
 
     initData(data){
@@ -68,29 +58,51 @@ cc.Class({
         // let spriteFrame = this.spriteAtlas.getSpriteFrame(this.color);
         // this.node.spriteFrame  = spriteFrame;
         this.setState(BallState.RunState)
-        this.ballNodeList.push(this.node);
     },
 
     setState (state) {
+        var that = this;
         if (this.state == state) {
             return;
         }
 
         switch(state){
             case BallState.Invalid:
+                this.state = BallState.Invalid;
+                
                 break;
             case BallState.MissState:
                 console.log("miss")
+                // setTimeout(function () {
+                //     cc.log("destroy")
+                //     that.node.destroy();
+                //   }.bind(this), 1000);
                 global.event.fire("ball_grade","miss");
                 this.state = BallState.MissState;
+                
                 break;
             case BallState.SuccessState:
                 global.event.fire("ball_grade","perfect");
+                
                 this.state = BallState.SuccessState;
-                this.node.active = false;
+
+                var action = cc.fadeOut(0.2);
+                var sequence = cc.sequence(action,cc.callFunc(()=>{
+                    that.node.active = false;
+                }));
+                this.node.runAction(sequence);
+                
+                // this.node.active = false;
+                // setTimeout(function () {
+                //     that.node.destroy();
+                //   }.bind(this), 1000);
                 break;
             case BallState.RunState:
-                
+                this.state = BallState.RunState;
+                break;
+            case BallState.DeadState:
+                this.state = BallState.DeadState;
+                this.node.destroy();
                 break;
             default:
                 break;
@@ -113,7 +125,7 @@ cc.Class({
             this.node.opacity = 255;
         }
         this.node.setPosition(this.node.position.x- dt*1000*0.48,this.node.position.y);
-        if(this.node.position.x<-485&&this.state!=BallState.MissState){
+        if(this.node.position.x<-500&&this.state===BallState.RunState){
             this.setState(BallState.MissState);
         }
         //调整小球的位置
@@ -121,24 +133,27 @@ cc.Class({
     },
 
     clickDrum (data){
-        if(this.node.position.x>-485 && this.node.position.x<-420){
-            switch(data){
-                case "B":
-                    this.setState(BallState.SuccessState);
-                    break;
-                case "T":
-                    this.setState(BallState.SuccessState);
-                    break;
-                case "S":
-                    this.setState(BallState.SuccessState);
-                    break;
+        if (this.state===BallState.RunState) {
+            if(this.tone===data && this.node.position.x>-485 && this.node.position.x<-420){
+                switch(data){
+                    case "B":
+                        this.setState(BallState.SuccessState);
+                        break;
+                    case "T":
+                        this.setState(BallState.SuccessState);
+                        break;
+                    case "S":
+                        this.setState(BallState.SuccessState);
+                        break;
+                }
             }
         }
+        
     },
-
-    onDestroy (){
-        for (let i = 0; i< this.ballNodeList.length; i++) {          
-            this.ballNodeList[i].active = false
+    setDead (){
+        cc.log("setDead")
+        if(this.state!=BallState.DeadState){
+            this.setState(BallState.DeadState);
         }
     }
 });

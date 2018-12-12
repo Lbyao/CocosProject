@@ -34,6 +34,9 @@ cc.Class({
     playMain: function () {
         this.audioSource.play();
     },
+    rewindMain: function () {
+        this.audioSource.rewind();  
+    },
     pauseMain: function () {
         this.audioSource.pause();
     },
@@ -69,6 +72,9 @@ cc.Class({
                 break;
             case "S":
                 this.playS();
+                break;
+            case "main":
+                this.playMain();
                 break;
         }
     },

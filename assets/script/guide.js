@@ -44,6 +44,8 @@ cc.Class({
     //    this.play();
     //    console.log("in newBall"+ballInfo)
     //    this.newBall(ballInfo,speed);
+
+        this.ballNodeList = [];
     },
 
     startGame(){
@@ -59,18 +61,29 @@ cc.Class({
             }
             ballInfo = jsonAssest.json.data;
             speed = jsonAssest.json.speed;
-            console.log("ballinfo="+ballInfo+",speed:"+speed)
+            console.log("ballinfo="+ballInfo.length+",speed:"+speed)
             that.newBall(ballInfo,speed); 
        });
     },
 
     resetGame () {
+        this.resetBallList();
         this.startGame();
     },
 
+    resetBallList() {
+        for(let i=0;i<this.ballNodeList.length;i++){
+            var ballNode = this.ballNodeList[i];
+            if(cc.isValid(ballNode)){
+                ballNode.getComponent("BallJson").setDead();
+            }
+        }
+        this.ballNodeList.splice(0,this.ballNodeList.length-1);
+    },
+
     newBall(ballInfo,speed) {
-        let ball;
-        var length = this.getJsonLength(ballInfo);
+        
+        var length = ballInfo.length;
         console.log(length);
         var i=0;
         var that = this;
@@ -82,7 +95,7 @@ cc.Class({
                 "ballColor": ballInfo[i].tone,
                 "interval": this.topNode.position.x - this.endNode.position.x
             };
-           
+            let ball;
             // console.log("position:"+position);
             switch(ballInfo[i].tone){
                 case "B":
@@ -90,18 +103,21 @@ cc.Class({
                     ball.setPosition(this.position,this.bottomNode.position.y);
                     ball.parent = that.node;
                     ball.getComponent("BallJson").initData(datas);
+                    this.ballNodeList.push(ball);
                     break;
                 case "T":
                     ball = cc.instantiate(that.ballPrefab);
                     ball.setPosition(this.position,that.midNode.position.y);
                     ball.parent = that.node;
                     ball.getComponent("BallJson").initData(datas);
+                    this.ballNodeList.push(ball);
                     break;
                 case "S":
                     ball = cc.instantiate(that.ballPrefab);
                     ball.setPosition(this.position,that.topNode.position.y);
                     ball.parent = that.node;
                     ball.getComponent("BallJson").initData(datas);
+                    this.ballNodeList.push(ball);
                     break;
             }
             this.position = (1000*60.0*0.48)/(speed*ballInfo[i].note*ballInfo[i].power*ballInfo[i].special)+this.position;
@@ -115,10 +131,6 @@ cc.Class({
         }
 
         return length;
-    },
-
-    showToast(){
-        
     },
 
     start () {
