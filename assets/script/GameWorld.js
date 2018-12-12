@@ -29,17 +29,17 @@ cc.Class({
         level.parent = this.node;
         level.getComponent("Level").startGame();
 
-        
         global.event.on("ball_grade",this.showGrade.bind(this));
     },
 
-    showGrade(grades){
-        var hideAction  = cc.hide()
+    showGrade(clickGrade){
+        // var hideAction  = cc.hide()
         
         let grade = cc.instantiate(this.gradePrefab);
         grade.parent = this.node;
         grade.position = this.node.position;
         grade.scale = 0;
+        grade.getComponent("grade").initView(clickGrade);
         // let scaleTo = ;
         var finished = cc.callFunc((grade)=>{
             grade.runAction(cc.scaleTo(0, 0).easing(cc.easeBounceIn()))

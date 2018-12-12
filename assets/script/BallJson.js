@@ -81,10 +81,13 @@ cc.Class({
                 break;
             case BallState.MissState:
                 console.log("miss")
+                global.event.fire("ball_grade","miss");
                 this.state = BallState.MissState;
                 break;
             case BallState.SuccessState:
+                global.event.fire("ball_grade","perfect");
                 this.state = BallState.SuccessState;
+                this.node.active = false;
                 break;
             case BallState.RunState:
                 
@@ -110,24 +113,8 @@ cc.Class({
             this.node.opacity = 255;
         }
         this.node.setPosition(this.node.position.x- dt*1000*0.48,this.node.position.y);
-        if(this.node.position.x<-485){
+        if(this.node.position.x<-485&&this.state!=BallState.MissState){
             this.setState(BallState.MissState);
-        }
-
-        switch (this.state) {
-            case BallState.RunState:
-                
-                break;
-            case BallState.SuccessState:
-                this.node.active = false;
-                // this.musicNode.getComponent("MusicUtil").playTone(this.tone);
-
-                global.event.fire("ball_grade","0");
-                break;
-            case BallState.MissState:
-                break;
-            default:
-                break;
         }
         //调整小球的位置
         // this.position(dt)
