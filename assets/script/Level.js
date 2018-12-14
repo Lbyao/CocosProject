@@ -31,14 +31,18 @@ cc.Class({
     },
     // 重新
     resetGame () {
-        cc.log("click")
-        this.musicNode.getComponent("MusicUtil").rewindMain();
-        this.guideNode.getComponent("guide").resetGame();
+        cc.log("click");
+        let music = this.musicNode.getComponent("MusicUtil");
+        music.rewindMain();
+        this.guideNode.getComponent("guide").resetGame(music);
     },
     // 开始
-    startGame () {
-        this.musicNode.getComponent("MusicUtil").playTone("main");
-        this.guideNode.getComponent("guide").startGame();
+    startGame (score) {
+        let music = this.musicNode.getComponent("MusicUtil");
+        music.playTone("main");
+        console.log(music.getCurrentTime());
+        
+        this.guideNode.getComponent("guide").startGame(music,score);
     },
     // LIFE-CYCLE CALLBACKS:
 

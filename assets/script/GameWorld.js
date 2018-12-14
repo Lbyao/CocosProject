@@ -20,16 +20,33 @@ cc.Class({
             default: null,
             type: cc.Prefab
         },
+        gameLevelPrefab: {
+            default: null,
+            type: cc.Prefab
+        }
     },
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
-        let level = cc.instantiate(this.levelPrefads[0]);
-        level.parent = this.node;
-        level.getComponent("Level").startGame();
-
+        
+        this.level = cc.instantiate(this.levelPrefads[0]);
+        this.level.parent = this.node;
+        this.showGameLevel();
         global.event.on("ball_grade",this.showGrade.bind(this));
+        global.event.on("start_game",this.startGame.bind(this));
+    },
+
+    showGameLevel() {
+        this.gameLevel = cc.instantiate(this.gameLevelPrefab);
+        this.gameLevel.parent = this.node;
+        this.gameLevel.position = this.node.position;
+        // gameLevel.getComponent("game_level")
+    },
+
+    startGame(score) {
+        this.gameLevel.active = 0;
+        this.level.getComponent("Level").startGame(score);
     },
 
     showGrade(clickGrade){

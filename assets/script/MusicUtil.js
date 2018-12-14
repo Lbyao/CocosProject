@@ -35,10 +35,17 @@ cc.Class({
         this.audioSource.play();
     },
     rewindMain: function () {
-        this.audioSource.rewind();  
+        if(this.audioSource.isPlaying){
+            this.audioSource.rewind();
+        }else{
+            this.playMain();
+        }
     },
     pauseMain: function () {
         this.audioSource.pause();
+    },
+    getCurrentTime (){
+        return this.audioSource.getCurrentTime();
     },
 
     playB: function () {

@@ -41,8 +41,8 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 0.4046296296296296,
-      "y": 0.4046296296296296,
+      "x": 1,
+      "y": 1,
       "z": 1
     },
     "_quat": {
@@ -309,6 +309,9 @@
     ],
     "gradePrefab": {
       "__uuid__": "1d39bf48-3b7a-4501-a0fa-86f4436daecc"
+    },
+    "gameLevelPrefab": {
+      "__uuid__": "7045949a-6e5e-4ff2-a895-963dd0baee50"
     },
     "_id": "09OoLkk9JIpbcA1I/OZR8b"
   },

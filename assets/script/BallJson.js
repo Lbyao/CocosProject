@@ -13,7 +13,8 @@ const BallState = {
     MissState : 0,
     SuccessState: 1,
     RunState : 2,
-    DeadState : 3
+    DeadState : 3,
+    PauseState : 4
 }
 cc.Class({
     extends: cc.Component,
@@ -33,6 +34,7 @@ cc.Class({
         this.runTime = 0;
         this.cha = 0;
         global.event.on("click_drum",this.clickDrum.bind(this));
+        global.event.on("state",this.setState.bind(this));
     },
 
     initData(data){
@@ -57,7 +59,7 @@ cc.Class({
         sprite.spriteFrame = this.spriteAtlas.getSpriteFrame(this.color);
         // let spriteFrame = this.spriteAtlas.getSpriteFrame(this.color);
         // this.node.spriteFrame  = spriteFrame;
-        this.setState(BallState.RunState)
+        this.setState(BallState.PauseState)
     },
 
     setState (state) {
@@ -102,8 +104,10 @@ cc.Class({
                 break;
             case BallState.DeadState:
                 this.state = BallState.DeadState;
-                this.node.destroy();
+                that.node.active = false;
                 break;
+            case BallState.PauseState:
+                this.state = BallState.PauseState;
             default:
                 break;
         }
@@ -124,7 +128,10 @@ cc.Class({
         }else{
             this.node.opacity = 255;
         }
-        this.node.setPosition(this.node.position.x- dt*1000*0.48,this.node.position.y);
+        if(this.state!==BallState.PauseState){
+            this.node.setPosition(this.node.position.x- dt*1000*0.48,this.node.position.y);
+        }
+        
         if(this.node.position.x<-500&&this.state===BallState.RunState){
             this.setState(BallState.MissState);
         }

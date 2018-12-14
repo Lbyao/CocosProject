@@ -1,3 +1,5 @@
+import global from "./global";
+
 // Learn cc.Class:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/class.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/en/scripting/class.html
@@ -48,11 +50,13 @@ cc.Class({
         this.ballNodeList = [];
     },
 
-    startGame(){
+    startGame(music,score){
         var ballInfo;
         var speed;
         var that = this;
         this.position = 0;
+        this.music = music;
+        cc.log(score);
         // this.musicNode.getComponent("MusicUtil").playMain();
         cc.loader.loadRes("json/json_difficulty",function (err,jsonAssest) {
             if (err) {
@@ -66,9 +70,9 @@ cc.Class({
        });
     },
 
-    resetGame () {
+    resetGame (music) {
         this.resetBallList();
-        this.startGame();
+        this.startGame(music);
     },
 
     resetBallList() {
@@ -122,6 +126,13 @@ cc.Class({
             }
             this.position = (1000*60.0*0.48)/(speed*ballInfo[i].note*ballInfo[i].power*ballInfo[i].special)+this.position;
         }
+        while(true){
+            // console.log(music.getCurrentTime());
+            if(this.music.getCurrentTime()>0){
+                break;
+            }
+        }
+        global.event.fire("state",2);
     },
 
     getJsonLength(ballInfo){
