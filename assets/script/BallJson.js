@@ -117,9 +117,7 @@ cc.Class({
     // update中的方法每一帧都会执行
     update (dt) {
         this.runTime += dt;
-        // console.log(dt+"this.s:"+this.s)
-        // console.log("this.node.position.x:"+this.node.position.x)
-        // this.node.position.x = this.node.position.x ;
+        
         if(this.node.position.x<-635){
             this.node.active = false;
         }
