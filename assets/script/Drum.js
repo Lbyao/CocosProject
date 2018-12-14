@@ -88,6 +88,35 @@ cc.Class({
                 that.tpNode.opacity = 0;
             },100);
         },this);
+
+        global.event.on("ball_in",this.ballIn.bind(this));
+    },
+
+    ballIn(tone){
+        switch (tone) {
+            case "B":
+                this.bnNode.opacity = 255;
+                break;
+            case "T":
+                this.tnNode.opacity = 255;
+                break;
+            case "S":
+                this.snNode.opacity = 255;
+                break;
+            case "miss":
+                this.bnNode.opacity = 0;
+                this.tnNode.opacity = 0;
+                this.snNode.opacity = 0;
+                break;
+            case "success":
+                this.bnNode.opacity = 0;
+                this.tnNode.opacity = 0;
+                this.snNode.opacity = 0;
+                break;
+            default:
+                
+                break;
+        }
     },
 
     start () {
