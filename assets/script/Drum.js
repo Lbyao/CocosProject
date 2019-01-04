@@ -50,76 +50,89 @@ cc.Class({
     },
     // LIFE-CYCLE CALLBACKS:
 
-    onLoad () {
+    onLoad() {
         var that = this;
 
-        this.bpNode.on(cc.Node.EventType.TOUCH_START,function() {
+        this.bpNode.on(cc.Node.EventType.TOUCH_START, function () {
             global.event.fire("click_drum", "B");
             this.musicNode.getComponent("MusicUtil").playB();
-            this.bpNode.opacity = 255;
-        },this);
-        this.bpNode.on(cc.Node.EventType.TOUCH_END,function() {
-            setTimeout(function() {
-                that.bpNode.opacity = 0;
-            },100);
-            
-        },this);
+            this.fadeIn(this.bpNode);
+        }, this);
+        this.bpNode.on(cc.Node.EventType.TOUCH_END, function () {
+            this.fadeOut(this.bpNode);
+        }, this);
 
-        this.spNode.on(cc.Node.EventType.TOUCH_START,function() {
+        this.spNode.on(cc.Node.EventType.TOUCH_START, function () {
             global.event.fire("click_drum", "S");
             this.musicNode.getComponent("MusicUtil").playS();
-            this.spNode.opacity = 255;
-        },this);
-        this.spNode.on(cc.Node.EventType.TOUCH_END,function() {
-            setTimeout(function() {
-                that.spNode.opacity = 0;
-            },100);
-            
-        },this);
+            this.fadeIn(this.spNode);
+        }, this);
+        this.spNode.on(cc.Node.EventType.TOUCH_END, function () {
+            this.fadeOut(this.spNode);
+        }, this);
 
-        this.tpNode.on(cc.Node.EventType.TOUCH_START,function() {
+        this.tpNode.on(cc.Node.EventType.TOUCH_START, function () {
             global.event.fire("click_drum", "T");
             this.musicNode.getComponent("MusicUtil").playT();
-            this.tpNode.opacity = 255;
-        },this);
+            this.fadeIn(this.tpNode);
+        }, this);
 
-        this.tpNode.on(cc.Node.EventType.TOUCH_END,function() {
-            setTimeout(function() {
-                that.tpNode.opacity = 0;
-            },100);
-        },this);
+        this.tpNode.on(cc.Node.EventType.TOUCH_END, function () {
+            this.fadeOut(this.tpNode)
+        }, this);
 
-        global.event.on("ball_in",this.ballIn.bind(this));
+        global.event.on("ball_in", this.ballIn.bind(this));
     },
 
-    ballIn(tone){
+    ballIn(tone) {
         switch (tone) {
             case "B":
-                this.bnNode.opacity = 255;
+                this.fadeIn(this.bnNode);
                 break;
             case "T":
-                this.tnNode.opacity = 255;
+                this.fadeIn(this.tnNode);
                 break;
             case "S":
-                this.snNode.opacity = 255;
+                this.fadeIn(this.snNode);
                 break;
             case "miss":
-                this.bnNode.opacity = 0;
-                this.tnNode.opacity = 0;
-                this.snNode.opacity = 0;
+                this.fadeOut(this.bnNode)
+                this.fadeOut(this.tnNode)
+                this.fadeOut(this.snNode)
                 break;
             case "success":
-                this.bnNode.opacity = 0;
-                this.tnNode.opacity = 0;
-                this.snNode.opacity = 0;
+                this.fadeOut(this.bnNode)
+                this.fadeOut(this.tnNode)
+                this.fadeOut(this.snNode)
                 break;
             default:
-                
                 break;
         }
     },
+    /**
+     * 渐进的动画
+     * @param {cc.Node} node 节点
+     */
+    fadeIn(node){
+        var action = cc.fadeIn(0.1);
+        var sequence = cc.sequence(action, cc.callFunc(() => {
+            node.opacity = 255;
+        }));
+        node.runAction(sequence);
+    },
+    /**
+     * 渐出的动画
+     * @param {cc.Node} node 节点 
+     */
+    fadeOut(node){
+        var action = cc.fadeOut(0.1);
+        var sequence = cc.sequence(action, cc.callFunc(() => {
+            node.opacity = 0;
+        }));
+        node.runAction(sequence);
+    },
 
-    start () {
+    start() {
 
     },
 

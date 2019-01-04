@@ -29,7 +29,7 @@ cc.Class({
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
-        
+        cc.log("name:"+Global.MusicName);
         this.level = cc.instantiate(this.levelPrefads[0]);
         this.level.parent = this.node;
         this.showGameLevel();

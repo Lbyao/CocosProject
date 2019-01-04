@@ -123,7 +123,7 @@ cc.Class({
             this.node.opacity = 255;
         }
         if (this.state !== BallState.PauseState) {
-            this.node.setPosition(this.node.position.x - dt * 1000 * 0.48, this.node.position.y);
+            this.node.setPosition(this.node.position.x - dt * 1000 * 0.42, this.node.position.y);
         }
 
         if (this.node.position.x < -500 && this.state === BallState.RunState) {

@@ -124,7 +124,7 @@ cc.Class({
                     this.ballNodeList.push(ball);
                     break;
             }
-            this.position = (1000*60.0*0.48)/(speed*ballInfo[i].note*ballInfo[i].power*ballInfo[i].special)+this.position;
+            this.position = (1000*60.0*0.42)/(speed*ballInfo[i].note*ballInfo[i].power*ballInfo[i].special)+this.position;
         }
         while(true){
             // console.log(music.getCurrentTime());
