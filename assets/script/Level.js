@@ -34,15 +34,17 @@ cc.Class({
         cc.log("click");
         let music = this.musicNode.getComponent("MusicUtil");
         music.rewindMain();
-        this.guideNode.getComponent("guide").resetGame(music);
+        this.guideNode.getComponent("guide").resetGame(music,this.score,this.path);
     },
     // 开始
     startGame (score) {
         let music = this.musicNode.getComponent("MusicUtil");
+        music.setMainMusic('bgm_txxm.wav');
         music.playTone("main");
         console.log(music.getCurrentTime());
-        
-        this.guideNode.getComponent("guide").startGame(music,score);
+        this.path = "json_easy_txxm";
+        this.score = score;
+        this.guideNode.getComponent("guide").startGame(music,score,path);
     },
     // LIFE-CYCLE CALLBACKS:
 

@@ -55,7 +55,7 @@ cc.Class({
                 });
             }
             
-            // cc.director.loadScene("game", this.onSceneLaunched());
+            cc.director.loadScene("game", this.onSceneLaunched());
                 
         }, this);
         // this.label.string = "123"

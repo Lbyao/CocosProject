@@ -50,7 +50,7 @@ cc.Class({
         this.ballNodeList = [];
     },
 
-    startGame(music,score){
+    startGame(music,score,path){
         var ballInfo;
         var speed;
         var that = this;
@@ -58,7 +58,7 @@ cc.Class({
         this.music = music;
         cc.log(score);
         // this.musicNode.getComponent("MusicUtil").playMain();
-        cc.loader.loadRes("json/json_difficulty",function (err,jsonAssest) {
+        cc.loader.loadRes(("json/"+path),function (err,jsonAssest) {
             if (err) {
                 console.log(err);
                 return;
@@ -67,12 +67,12 @@ cc.Class({
             speed = jsonAssest.json.speed;
             console.log("ballinfo="+ballInfo.length+",speed:"+speed)
             that.newBall(ballInfo,speed); 
-       });
+        });
     },
 
-    resetGame (music) {
+    resetGame (music,score,path) {
         this.resetBallList();
-        this.startGame(music);
+        this.startGame(music,score,path);
     },
 
     resetBallList() {

@@ -13,60 +13,74 @@ cc.Class({
 
     properties: {
         audioSource: {
-            type: cc.AudioSource,
+            type: cc.AudioClip,
             default: null
         },
 
         bAudioSource: {
-            type: cc.AudioSource,
+            type: cc.AudioClip,
             default: null
         },
         tAudioSource: {
-            type: cc.AudioSource,
+            type: cc.AudioClip,
             default: null
         },
         sAudioSource: {
-            type: cc.AudioSource,
+            type: cc.AudioClip,
             default: null
         },
     },
 
+    setMainMusic: function(path){
+        // 'resources/audio/music.mp3'
+        this.audioSource = cc.url.raw('resources/audio/'+path);
+    },
+
     playMain: function () {
-        this.audioSource.play();
+        this.main = cc.audioEngine.playMusic(this.audioSource, false);
+        // this.audioSource.play();
     },
     rewindMain: function () {
-        if(this.audioSource.isPlaying){
-            this.audioSource.rewind();
+        if(cc.audioEngine.isMusicPlaying()){
+            cc.audioEngine.resumeMusic()
+            // this.audioSource.rewind();
         }else{
             this.playMain();
         }
     },
     pauseMain: function () {
-        this.audioSource.pause();
+        cc.audioEngine.pauseMusic();
+        // this.audioSource.pause();
     },
     getCurrentTime (){
-        return this.audioSource.getCurrentTime();
+        return cc.audioEngine.getCurrentTime(this.main);
     },
 
     playB: function () {
-        this.bAudioSource.play();
+        this.bAudio = cc.audioEngine.playEffect(this.bAudioSource,false);
+        // this.bAudioSource.play();
     },
     pauseB: function () {
-        this.bAudioSource.pause();
+        cc.audioEngine.stopEffect(this.bAudio);
+        // this.bAudioSource.pause();
     },
 
     playT: function () {
-        this.tAudioSource.play();
+        this.tAudio = cc.audioEngine.playEffect(this.tAudioSource,false);
+        // this.tAudioSource.play();
     },
     pauseT: function () {
-        this.tAudioSource.pause();
+        cc.audioEngine.stopEffect(this.tAudio);
+        // this.tAudioSource.pause();
     },
 
     playS: function () {
-        this.sAudioSource.play();
+        this.sAudio = cc.audioEngine.playEffect(this.sAudioSource,false);
+        // this.sAudioSource.play();
     },
     pauseS: function () {
-        this.sAudioSource.pause();
+        cc.audioEngine.stopEffect(this.sAudio);
+        // this.sAudioSource.pause();
     },
 
     playTone: function(tone) {
