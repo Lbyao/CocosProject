@@ -50,7 +50,7 @@ cc.Class({
         this.ballNodeList = [];
     },
 
-    startGame(music,score,path){
+    startGame(music,score){
         var ballInfo;
         var speed;
         var that = this;
@@ -58,21 +58,41 @@ cc.Class({
         this.music = music;
         cc.log(score);
         // this.musicNode.getComponent("MusicUtil").playMain();
-        cc.loader.loadRes(("json/"+path),function (err,jsonAssest) {
-            if (err) {
-                console.log(err);
-                return;
-            }
-            ballInfo = jsonAssest.json.data;
-            speed = jsonAssest.json.speed;
-            console.log("ballinfo="+ballInfo.length+",speed:"+speed)
-            that.newBall(ballInfo,speed); 
-        });
+        
     },
 
-    resetGame (music,score,path) {
+    loadJson(path){
+        var ballInfo;
+        var speed;
+        var that = this;
+        this.success = false;
+            cc.loader.loadRes(("json/"+path),function (err,jsonAssest) {
+                if (err) {
+                    console.log(err);
+                    return;
+                }
+
+                that.loadSuccess();
+                // that.startGame(music,score);
+                that.success = true;
+                cc.log("success="+that.success);
+                global.event.fire("loadSuccess",true);
+                ballInfo = jsonAssest.json.data;
+                speed = jsonAssest.json.speed;
+                cc.log("ballinfo="+ballInfo.length+",speed:"+speed)
+                that.newBall(ballInfo,speed); 
+                
+            });
+        
+    },
+
+    loadSuccess(){
+        cc.log("加载完成！！！！！！！！！！");
+    },
+
+    resetGame (music,score) {
         this.resetBallList();
-        this.startGame(music,score,path);
+        this.startGame(music,score);
     },
 
     resetBallList() {
@@ -91,8 +111,8 @@ cc.Class({
         console.log(length);
         var i=0;
         var that = this;
-        this.position = this.endNode.position.x;
-        // console.log("endNode:" + position)
+        this.position = this.endNode.position.x+119;
+        console.log("endNode:" + this.position)
         for(let i=0;i<length;i++){
             let datas = {
                 "position":  this.position,
@@ -127,8 +147,9 @@ cc.Class({
             this.position = (1000*60.0*0.42)/(speed*ballInfo[i].note*ballInfo[i].power*ballInfo[i].special)+this.position;
         }
         while(true){
-            // console.log(music.getCurrentTime());
+            console.log("current:"+this.music.getCurrentTime());
             if(this.music.getCurrentTime()>0){
+                this.music.setCurrentTime(0);
                 break;
             }
         }

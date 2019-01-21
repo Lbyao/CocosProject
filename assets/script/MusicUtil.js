@@ -56,6 +56,10 @@ cc.Class({
         return cc.audioEngine.getCurrentTime(this.main);
     },
 
+    setCurrentTime(pos){
+        return cc.audioEngine.setCurrentTime(this.main,pos);
+    },
+
     playB: function () {
         this.bAudio = cc.audioEngine.playEffect(this.bAudioSource,false);
         // this.bAudioSource.play();

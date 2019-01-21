@@ -34,21 +34,49 @@ cc.Class({
         cc.log("click");
         let music = this.musicNode.getComponent("MusicUtil");
         music.rewindMain();
-        this.guideNode.getComponent("guide").resetGame(music,this.score,this.path);
+        
+        var success = this.guideNode.getComponent("guide").loadJson(this.path);
+        cc.log("resetGame-----"+success);
+        this.guideNode.getComponent("guide").resetGame(music,this.score);
     },
     // 开始
     startGame (score) {
+        this.score = score;
+        var isStart = true;
+        this.path = "json_easy_txxm";
+        
+        
+
+        // while (isStart) {
+        // //     var success = this.guideNode.getComponent("guide").getLoadSuccess();
+        // //     cc.log("startGame-------"+success+",this.num:");
+        //     global.event.on("loadSuccess",this,loadSuccess.bind(this));
+        //     if(this.isSuccess){
+        //         isStart = false;
+        //     }
+        // }
+        global.event.on("loadSuccess",this.startMusic.bind(this));
+// ,music,score
+        this.guideNode.getComponent("guide").loadJson(this.path);
+    },
+    // LIFE-CYCLE CALLBACKS:
+
+    startMusic(result){
         let music = this.musicNode.getComponent("MusicUtil");
         music.setMainMusic('bgm_txxm.wav');
         music.playTone("main");
         console.log(music.getCurrentTime());
-        this.path = "json_easy_txxm";
-        this.score = score;
-        this.guideNode.getComponent("guide").startGame(music,score,path);
+        
+        this.guideNode.getComponent("guide").startGame(music,this.score);
+        
     },
-    // LIFE-CYCLE CALLBACKS:
 
-    // onLoad () {},
+    loadSuccess(isSuccess){
+        this.isSuccess = isSuccess;
+    },
+
+    onLoad () {
+    },
 
     start () {
 

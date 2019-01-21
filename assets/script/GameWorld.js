@@ -35,6 +35,25 @@ cc.Class({
         this.showGameLevel();
         global.event.on("ball_grade",this.showGrade.bind(this));
         global.event.on("start_game",this.startGame.bind(this));
+
+        // addEscEvent = function(node){
+        //     cc.eventManager.addListener({
+        //         event: cc.EventListener.KEYBOARD,
+        //         onKeyPressed:  function(keyCode, event){
+        //             cc.game.end();
+        //             // cc.hb.uiMgr.openPanel("Hall/alertBox/AlertBox",cc.hb.alertMgr.ANIMATE_CENTENT,"确认退出游戏吗？",function(success){
+        //             //         if (success){}
+        //             //     }
+        //             // );
+        //         },
+        //         onKeyReleased: function(keyCode, event){
+        //             if(keyCode == cc.KEY.back){
+        //                 cc.log("")
+        //             }
+        //         }
+        //     }, node);
+        // }
+
     },
 
     showGameLevel() {
