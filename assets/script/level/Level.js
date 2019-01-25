@@ -42,20 +42,12 @@ cc.Class({
     },
     // 开始
     startGame (score) {
+        cc.log("startGame:"+cc.sys.localStorage.getItem("itemName"));
+        this.name = this.getSpelling(cc.sys.localStorage.getItem("itemName"));
+
         this.score = score;
         var isStart = true;
-        this.path = "json_easy_txxm";
-        
-        
-
-        // while (isStart) {
-        // //     var success = this.guideNode.getComponent("guide").getLoadSuccess();
-        // //     cc.log("startGame-------"+success+",this.num:");
-        //     global.event.on("loadSuccess",this,loadSuccess.bind(this));
-        //     if(this.isSuccess){
-        //         isStart = false;
-        //     }
-        // }
+        this.path = "json_easy_"+this.name;
 
         //监听播放音乐
         global.event.on("loadSuccess",this.startMusic.bind(this));
@@ -66,7 +58,8 @@ cc.Class({
 
     startMusic(result){
         let music = this.musicNode.getComponent("MusicUtil");
-        music.setMainMusic('bgm_txxm.wav');
+        // music.stopMain();
+        music.setMainMusic('bgm_'+this.name+'.wav');
         music.playTone("main");
         console.log(music.getCurrentTime());
         
@@ -74,8 +67,38 @@ cc.Class({
         
     },
 
+    getSpelling(name){
+        var res;
+        switch(name){
+            case "00":
+                res = 'txxm';
+                break;
+            case "01":
+                res = "dcj";
+                break;
+        }
+        return res;
+    },
+
     loadSuccess(isSuccess){
         this.isSuccess = isSuccess;
+    },
+
+    nextMusic(){
+
+        cc.log("nextMusic");
+
+        this.name = 'txxm';
+        // this.score = score;
+        var isStart = true;
+        this.path = "json_easy_"+this.name;
+
+        //监听播放音乐
+        global.event.on("loadSuccess",this.startMusic.bind(this));
+// ,music,score
+        this.guideNode.getComponent("guide").resetBallList();
+        this.guideNode.getComponent("guide").loadJson(this.path);
+        // cc.Codec.unzip()
     },
 
     onLoad () {

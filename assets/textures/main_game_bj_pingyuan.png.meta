@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "151bf1b6-b6a0-44f2-9721-9015a8e38771",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "main_game_bj_pingyuan": {
+      "ver": "1.0.3",
+      "uuid": "dd6bcc79-0752-400d-9df2-8455526e87bf",
+      "rawTextureUuid": "151bf1b6-b6a0-44f2-9721-9015a8e38771",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 1920,
+      "height": 1080,
+      "rawWidth": 1920,
+      "rawHeight": 1080,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

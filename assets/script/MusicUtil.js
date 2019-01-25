@@ -52,6 +52,11 @@ cc.Class({
         cc.audioEngine.pauseMusic();
         // this.audioSource.pause();
     },
+
+    stopMain: function(){
+        cc.audioEngine.stopAll();
+    },
+
     getCurrentTime (){
         return cc.audioEngine.getCurrentTime(this.main);
     },

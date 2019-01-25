@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "dc74b3bb-4729-4142-b5bf-62b072b0376b",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "main_game_bj_yun_02": {
+      "ver": "1.0.3",
+      "uuid": "35715e4e-6fb8-47df-8b37-771b57979522",
+      "rawTextureUuid": "dc74b3bb-4729-4142-b5bf-62b072b0376b",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 227,
+      "height": 114,
+      "rawWidth": 227,
+      "rawHeight": 114,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

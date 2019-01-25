@@ -40,15 +40,18 @@ cc.Class({
         var that = this;
         this.node.on('touchend', function () {
             console.log("Item " + that.itemID + ' clicked');
+            cc.sys.localStorage.setItem("itemName",that.itemID);
+
             // var label = this.node.getComponent(cc.Label);
             cc.log(that.label.string);
             Global.MusicName = that.label.string;
             // this.downLoad();
             // cc.log(cc.sys.localStorage.getItem("00")+"-----------getItem")
-            var itemsid = that.getDownloadId(that.itemID);
-            cc.log(cc.sys.localStorage.getItem(itemsid)+"-----------getItem")
-            if(cc.sys.localStorage.getItem(itemsid)==null){
-                var fileName = itemsid+".zip";
+            that.itemsid = that.getDownloadId(that.itemID);
+            cc.log("onLoad:"+that.itemsid);
+            cc.log(cc.sys.localStorage.getItem(that.itemsid)+"-----------getItem")
+            if(cc.sys.localStorage.getItem(that.itemsid)==null){
+                var fileName = that.itemsid+".zip";
                 var url = "http://www.dadpat.com/app/rhythm/"+fileName;
                 that.downFile2Local(url,fileName,function(params) {
                     cc.log(params);
@@ -129,9 +132,10 @@ cc.Class({
         this.downloader = new jsb.Downloader();
         this.downloader.createDownloadFileTask(url, fullPath,"");//创建下载任务
         this.downloader.setOnFileTaskSuccess(function(){   
-            cc.log("下载成功!!");      
+            cc.log("下载成功!!"+"that.getDownloadId(that.itemID)"+that.itemsid+",itemid:"+that.itemsid);      
             // removeModelLoadingDialog();//删除加载中模态框
-            cc.sys.localStorage.setItem(that.getDownloadId(that.itemID),fullPath);
+        
+            cc.sys.localStorage.setItem(that.itemsid,fullPath);
             if(callback){
                 callback(fullPath);
             }

@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "3607d9f7-e7cb-43e9-bc44-7a441df4a5b8",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "main_game_bj_shamo": {
+      "ver": "1.0.3",
+      "uuid": "7a9b5c16-6bb2-47c8-9163-aa6c8d076d60",
+      "rawTextureUuid": "3607d9f7-e7cb-43e9-bc44-7a441df4a5b8",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 1920,
+      "height": 1080,
+      "rawWidth": 1920,
+      "rawHeight": 1080,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "e6557c0d-4b72-4352-8948-51292b36b6c5",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "main_game_bj_sky": {
+      "ver": "1.0.3",
+      "uuid": "de97557d-e075-477d-a613-32cf3555d207",
+      "rawTextureUuid": "e6557c0d-4b72-4352-8948-51292b36b6c5",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 1920,
+      "height": 1080,
+      "rawWidth": 1920,
+      "rawHeight": 1080,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}
