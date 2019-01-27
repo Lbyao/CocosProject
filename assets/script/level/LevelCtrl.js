@@ -26,6 +26,7 @@ cc.Class({
         for(var i=0;i<20;i++){
             this.levelNodes[i].on('touchend', function (event) {
                 var name = event.currentTarget.name;
+                console.log("Item " + name+ ' clicked');
                 name = name.substring(name.length-2,name.length);
                 console.log("Item " + name+ ' clicked');
                 cc.sys.localStorage.setItem("itemName",name);
@@ -38,13 +39,13 @@ cc.Class({
                 that.itemsid = that.getDownloadId(name);
                 cc.log("onLoad:"+that.itemsid);
                 cc.log(cc.sys.localStorage.getItem(that.itemsid)+"-----------getItem")
-                if(cc.sys.localStorage.getItem(that.itemsid)==null){
-                    var fileName = that.itemsid+".zip";
-                    var url = "http://www.dadpat.com/app/rhythm/"+fileName;
-                    that.downFile2Local(url,fileName,function(params) {
-                        cc.log(params);
-                    });
-                }
+                // if(cc.sys.localStorage.getItem(that.itemsid)==null){
+                //     var fileName = that.itemsid+".zip";
+                //     var url = "http://www.dadpat.com/app/rhythm/"+fileName;
+                //     that.downFile2Local(url,fileName,function(params) {
+                //         cc.log(params);
+                //     });
+                // }
                 
                 cc.director.loadScene("game");
                     

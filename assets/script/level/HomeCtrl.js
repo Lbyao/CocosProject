@@ -7,35 +7,92 @@
 // Learn life-cycle callbacks:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/en/scripting/life-cycle-callbacks.html
-
+import global from "../global"
 cc.Class({
     extends: cc.Component,
 
     properties: {
-        // foo: {
-        //     // ATTRIBUTES:
-        //     default: null,        // The default value will be used only when the component attaching
-        //                           // to a node for the first time
-        //     type: cc.SpriteFrame, // optional, default is typeof default
-        //     serializable: true,   // optional, default is true
-        // },
-        // bar: {
-        //     get () {
-        //         return this._bar;
-        //     },
-        //     set (value) {
-        //         this._bar = value;
-        //     }
-        // },
+        modeNode:{
+            default:null,
+            type:cc.Sprite
+        },
+        sprites:{
+            default:[],
+            type:cc.SpriteFrame
+        },
+        starLabel:{
+            default:null,
+            type:cc.Label
+        },
+        goldCoinLabel:{
+            default:null,
+            type:cc.Label
+        },
+        loveLabel:{
+            default:null,
+            type:cc.Label
+        },
     },
 
     // LIFE-CYCLE CALLBACKS:
 
-    // onLoad () {},
+    onLoad () {
+
+        var goldCoin = cc.sys.localStorage.getItem("goldCoin");
+        var love = cc.sys.localStorage.getItem("love");
+        var mode = cc.sys.localStorage.getItem("mode");
+        var star = cc.sys.localStorage.getItem("star");
+        if(goldCoin===null){
+            cc.sys.localStorage.setItem("goldCoin",6666);
+        }
+        if(love === null){
+            cc.sys.localStorage.setItem("love",1000);
+        }
+        if(star===null){
+            cc.sys.localStorage.setItem("star",0);
+        }
+        if(mode===null){
+            cc.sys.localStorage.setItem("mode",0);
+        }
+
+        this.starLabel.string = "x"+cc.sys.localStorage.getItem("star");
+        this.goldCoinLabel.string = "x"+cc.sys.localStorage.getItem("goldCoin");
+        this.loveLabel.string = "x"+cc.sys.localStorage.getItem("love");
+    },
 
     start () {
 
     },
 
+    changeMode(){
+        var mode = cc.sys.localStorage.getItem("mode")
+        switch(mode){
+            case "0":
+                this.modeNode.spriteFrame = this.sprites[1];
+                cc.sys.localStorage.setItem("mode",1);
+                break;
+            case "1":
+                cc.sys.localStorage.setItem("mode",0);
+                this.modeNode.spriteFrame = this.sprites[0]
+                break;
+        }
+    },
+
+    showTipsDialog(){
+        //dialogCtrl.js
+        global.event.fire("showTips");
+    },
+
+    showGoldCoinDialog(){
+        //dialogCtrl.js
+        global.event.fire("showGoldCoin");
+    },
+
+    showLoveDialog(){
+        global.event.fire("showLove");
+    },
+
     // update (dt) {},
+
+
 });

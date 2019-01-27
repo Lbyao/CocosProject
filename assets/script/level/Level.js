@@ -7,7 +7,7 @@
 // Learn life-cycle callbacks:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/en/scripting/life-cycle-callbacks.html
-import global from "./global"
+import global from "../global"
 //关卡控制
 cc.Class({
     extends: cc.Component,
@@ -49,7 +49,7 @@ cc.Class({
         var isStart = true;
         this.path = "json_easy_"+this.name;
 
-        //监听播放音乐
+        //监听播放音乐guide.js
         global.event.on("loadSuccess",this.startMusic.bind(this));
 // ,music,score
         this.guideNode.getComponent("guide").loadJson(this.path);

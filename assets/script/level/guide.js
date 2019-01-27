@@ -1,4 +1,4 @@
-import global from "./global";
+import global from "../global";
 
 // Learn cc.Class:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/class.html
@@ -76,6 +76,7 @@ cc.Class({
                 // that.startGame(music,score);
                 that.success = true;
                 cc.log("success="+that.success);
+                //Level.js
                 global.event.fire("loadSuccess",true);
                 ballInfo = jsonAssest.json.data;
                 speed = jsonAssest.json.speed;

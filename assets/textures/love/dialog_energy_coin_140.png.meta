@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "83428df6-6cd1-4734-9a9a-a6afeea81a36",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "dialog_energy_coin_140": {
+      "ver": "1.0.3",
+      "uuid": "b04c401e-93b2-4987-a3a3-e8e23a6d686a",
+      "rawTextureUuid": "83428df6-6cd1-4734-9a9a-a6afeea81a36",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 318,
+      "height": 351,
+      "rawWidth": 318,
+      "rawHeight": 351,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

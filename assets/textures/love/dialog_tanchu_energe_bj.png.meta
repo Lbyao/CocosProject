@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "d6240cf1-871a-44cf-a82e-dfa23efad849",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "dialog_tanchu_energe_bj": {
+      "ver": "1.0.3",
+      "uuid": "59d10699-bf08-435c-9166-bbb8511626d2",
+      "rawTextureUuid": "d6240cf1-871a-44cf-a82e-dfa23efad849",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": -0.5,
+      "offsetY": 0,
+      "trimX": 2,
+      "trimY": 0,
+      "width": 1443,
+      "height": 879,
+      "rawWidth": 1448,
+      "rawHeight": 879,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}
