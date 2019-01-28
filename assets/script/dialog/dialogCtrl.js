@@ -24,6 +24,14 @@ cc.Class({
             default: null,
             type: cc.Node
         },
+        goldCoinLabel:{
+            default:null,
+            type: cc.Label
+        },
+        loveLabel:{
+            default:null,
+            type: cc.Label
+        }
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -40,6 +48,8 @@ cc.Class({
     },
 
     closeTips(){
+        //musicUtil.js
+        global.event.fire("btnClick");
         this.tipsNode.active = false;
     },
 
@@ -48,14 +58,24 @@ cc.Class({
     },
 
     closeGoldCoin(){
+        //musicUtil.js
+        global.event.fire("btnClick");
         this.goldCoinNode.active = false;
     },
 
     shareGetCoin(){
+        global.event.fire("btnClick");
+        var coin = cc.sys.localStorage.getItem("goldCoin");
+        cc.sys.localStorage.setItem("goldCoin",coin-0+10);
+        this.goldCoinLabel.string = "x"+cc.sys.localStorage.getItem("goldCoin");
         cc.log("分享得金币");
     },
 
     uploadGetCoin(){
+        global.event.fire("btnClick");
+        var coin = cc.sys.localStorage.getItem("goldCoin");
+        cc.sys.localStorage.setItem("goldCoin",coin-0+30);
+        this.goldCoinLabel.string = "x"+cc.sys.localStorage.getItem("goldCoin");
         cc.log("上传得金币");
     },
 
@@ -64,10 +84,12 @@ cc.Class({
     },
 
     colseLove(){
+        global.event.fire("btnClick");
         this.loveNode.active = false;
     },
 
     getLove(event,data){
+        global.event.fire("btnClick");
         // debugger
         cc.log(event+"data:"+data)
         var coin = cc.sys.localStorage.getItem("goldCoin");
@@ -75,15 +97,21 @@ cc.Class({
         switch(data){
             case "60":
                 cc.sys.localStorage.setItem("goldCoin",coin-60);
-                cc.sys.localStorage.setItem("love",love+3);
+                cc.sys.localStorage.setItem("love",love-0+3);
+                this.goldCoinLabel.string = "x"+cc.sys.localStorage.getItem("goldCoin");
+                this.loveLabel.string = "x"+cc.sys.localStorage.getItem("love");
                 break;
             case "90":
                 cc.sys.localStorage.setItem("goldCoin",coin-90);
-                cc.sys.localStorage.setItem("love",love+5);
+                cc.sys.localStorage.setItem("love",love-0+5);
+                this.goldCoinLabel.string = "x"+cc.sys.localStorage.getItem("goldCoin");
+                this.loveLabel.string = "x"+cc.sys.localStorage.getItem("love");
                 break;
             case "140":
                 cc.sys.localStorage.setItem("goldCoin",coin-140);
-                cc.sys.localStorage.setItem("love",love+8);
+                cc.sys.localStorage.setItem("love",love-0+8);
+                this.goldCoinLabel.string = "x"+cc.sys.localStorage.getItem("goldCoin");
+                this.loveLabel.string = "x"+cc.sys.localStorage.getItem("love");
                 break;
         }
     },

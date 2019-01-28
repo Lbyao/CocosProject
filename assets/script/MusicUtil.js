@@ -1,3 +1,5 @@
+import global from "./global";
+
 // Learn cc.Class:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/class.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/en/scripting/class.html
@@ -29,6 +31,14 @@ cc.Class({
             type: cc.AudioClip,
             default: null
         },
+        btClickAudioSource: {
+            type: cc.AudioClip,
+            default: null
+        },
+        imgClickAudioSource: {
+            type: cc.AudioClip,
+            default: null
+        },
     },
 
     setMainMusic: function(path){
@@ -39,14 +49,13 @@ cc.Class({
     playMain: function () {
         this.main = cc.audioEngine.playMusic(this.audioSource, false);
         // this.audioSource.play();
+        return this.main;
     },
     rewindMain: function () {
-        if(cc.audioEngine.isMusicPlaying()){
-            cc.audioEngine.resumeMusic()
-            // this.audioSource.rewind();
-        }else{
-            this.playMain();
-        }
+        this.playMain();
+    },
+    resumeMain: function(){
+        cc.audioEngine.resumeMusic()
     },
     pauseMain: function () {
         cc.audioEngine.pauseMusic();
@@ -67,6 +76,7 @@ cc.Class({
 
     playB: function () {
         this.bAudio = cc.audioEngine.playEffect(this.bAudioSource,false);
+        return this.bAudio;
         // this.bAudioSource.play();
     },
     pauseB: function () {
@@ -77,6 +87,7 @@ cc.Class({
     playT: function () {
         this.tAudio = cc.audioEngine.playEffect(this.tAudioSource,false);
         // this.tAudioSource.play();
+        return this.tAudio;
     },
     pauseT: function () {
         cc.audioEngine.stopEffect(this.tAudio);
@@ -86,6 +97,7 @@ cc.Class({
     playS: function () {
         this.sAudio = cc.audioEngine.playEffect(this.sAudioSource,false);
         // this.sAudioSource.play();
+        return this.sAudio;
     },
     pauseS: function () {
         cc.audioEngine.stopEffect(this.sAudio);
@@ -93,6 +105,7 @@ cc.Class({
     },
 
     playTone: function(tone) {
+        var id;
         switch(tone){
             case "B":
                 this.playB();
@@ -104,9 +117,29 @@ cc.Class({
                 this.playS();
                 break;
             case "main":
-                this.playMain();
+                id = this.playMain();
                 break;
         }
+        return id;
+    },
+
+    loop(id){
+        cc.audioEngine.setLoop(id, true);
+    },
+
+    playButtonClick(){
+        this.buttonClick = cc.audioEngine.playEffect(this.btClickAudioSource,false);
+    },
+
+    playImgClick(){
+        this.imgClick = cc.audioEngine.playEffect(this.imgClickAudioSource,false);
+    },
+
+    onLoad(){
+        //levelCtrl.js
+        global.event.on("btnClick",this.playButtonClick.bind(this));
+
+        global.event.on("btnClick",this.playImgClick.bind(this));
     },
 
     start () {

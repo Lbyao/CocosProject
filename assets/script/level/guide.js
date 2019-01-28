@@ -96,6 +96,24 @@ cc.Class({
         this.startGame(music,score);
     },
 
+    pauseGame (){
+        for(let i=0;i<this.ballNodeList.length;i++){
+            var ballNode = this.ballNodeList[i];
+            if(cc.isValid(ballNode)){
+                ballNode.getComponent("BallJson").setState(4);
+            }
+        }
+    },
+
+    resumeGame(){
+        for(let i=0;i<this.ballNodeList.length;i++){
+            var ballNode = this.ballNodeList[i];
+            if(cc.isValid(ballNode)){
+                ballNode.getComponent("BallJson").setState(2);
+            }
+        }
+    },
+
     resetBallList() {
         for(let i=0;i<this.ballNodeList.length;i++){
             var ballNode = this.ballNodeList[i];

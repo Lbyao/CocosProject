@@ -22,13 +22,26 @@ cc.Class({
             type: cc.Node
         }
     },
+
+    backHome(){
+        let music = this.musicNode.getComponent("MusicUtil");
+        music.stopMain();
+        cc.director.loadScene("homePage");
+    },
+
     // 暂停
     pauseGame (){
-
+        let music = this.musicNode.getComponent("MusicUtil");
+        music.pauseMain();
+        this.guideNode.getComponent("guide").pauseGame();
+        //pauseCtrl.js
+        global.event.fire("showPause");
     },
     // 继续
     resumeGame () {
-
+        let music = this.musicNode.getComponent("MusicUtil");
+        music.resumeMain();
+        this.guideNode.getComponent("guide").resumeGame();
     },
     // 重新
     resetGame () {

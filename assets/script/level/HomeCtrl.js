@@ -32,12 +32,29 @@ cc.Class({
             default:null,
             type:cc.Label
         },
+        musicNode:{
+            default:null,
+            type:cc.Node
+        }
     },
 
     // LIFE-CYCLE CALLBACKS:
 
-    onLoad () {
+    playBg(){
+        let music = this.musicNode.getComponent("MusicUtil");
+        music.setMainMusic('main_bgm.mp3');
+        var id = music.playTone("main");
+        music.loop(id);
+    },
 
+    pauseBg(){
+        let music = this.musicNode.getComponent("MusicUtil");
+        music.stopMain();
+    },
+
+    onLoad () {
+        this.playBg();
+        global.event.on("pauseBg",this.pauseBg.bind(this));
         var goldCoin = cc.sys.localStorage.getItem("goldCoin");
         var love = cc.sys.localStorage.getItem("love");
         var mode = cc.sys.localStorage.getItem("mode");
@@ -65,6 +82,7 @@ cc.Class({
     },
 
     changeMode(){
+        global.event.fire("btnClick");
         var mode = cc.sys.localStorage.getItem("mode")
         switch(mode){
             case "0":
@@ -80,15 +98,18 @@ cc.Class({
 
     showTipsDialog(){
         //dialogCtrl.js
+        global.event.fire("btnClick");
         global.event.fire("showTips");
     },
 
     showGoldCoinDialog(){
         //dialogCtrl.js
+        global.event.fire("btnClick");
         global.event.fire("showGoldCoin");
     },
 
     showLoveDialog(){
+        global.event.fire("btnClick");
         global.event.fire("showLove");
     },
 

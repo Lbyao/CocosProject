@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "f775ebcf-8258-4789-a9b6-3bb8b4399699",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "game_bj_energy": {
+      "ver": "1.0.3",
+      "uuid": "59b5fe99-1676-4cda-bc08-1e0239c7ad75",
+      "rawTextureUuid": "f775ebcf-8258-4789-a9b6-3bb8b4399699",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 200,
+      "height": 72,
+      "rawWidth": 200,
+      "rawHeight": 72,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

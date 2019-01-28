@@ -137,9 +137,7 @@ cc.Class({
         this.scheduleOnce(timeCallback, time);
     },
 
-    start () {
-
-    },
+    // start () {},
 
     // update (dt) {},
 });

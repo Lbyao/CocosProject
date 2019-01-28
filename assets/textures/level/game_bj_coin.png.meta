@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "2c516caf-674e-4193-8990-f2a58db3bea5",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "game_bj_coin": {
+      "ver": "1.0.3",
+      "uuid": "fd6f2062-827e-470e-8a7d-62d7bbf12119",
+      "rawTextureUuid": "2c516caf-674e-4193-8990-f2a58db3bea5",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 200,
+      "height": 72,
+      "rawWidth": 200,
+      "rawHeight": 72,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}
