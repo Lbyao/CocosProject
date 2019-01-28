@@ -71,8 +71,8 @@ cc.Class({
         var love = cc.sys.localStorage.getItem("love");
         this.loveLabel.string = "x"+love;
 
-        cc.log("startGame:"+cc.sys.localStorage.getItem("itemName"));
-        this.name = this.getSpelling(cc.sys.localStorage.getItem("itemName"));
+        cc.log("startGame:"+this.itemName);
+        this.name = this.getSpelling(this.itemName);
 
         this.score = score;
         var isStart = true;
@@ -131,6 +131,9 @@ cc.Class({
     },
 
     onLoad () {
+
+        this.itemName = cc.sys.localStorage.getItem("itemName");
+
         var goldCoin = cc.sys.localStorage.getItem("goldCoin");
         var love = cc.sys.localStorage.getItem("love");
         this.coinLabel.string = "x"+goldCoin;
