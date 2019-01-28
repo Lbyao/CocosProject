@@ -77,6 +77,7 @@ cc.Class({
         this.startNode.on(cc.Node.EventType.TOUCH_START,function() {
             cc.log(score)
             if(score>0){
+                //GameWorld.js
                 global.event.fire("start_game",score);
             }
         },this);

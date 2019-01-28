@@ -20,6 +20,18 @@ cc.Class({
         guideNode: {
             default: null,
             type: cc.Node
+        },
+        coinLabel:{
+            default: null,
+            type: cc.Label
+        },
+        loveLabel:{
+            default: null,
+            type: cc.Label
+        },
+        scoreLabel:{
+            default: null,
+            type: cc.Label
         }
     },
 
@@ -55,6 +67,10 @@ cc.Class({
     },
     // 开始
     startGame (score) {
+        this.scoreLabel.string = "0";
+        var love = cc.sys.localStorage.getItem("love");
+        this.loveLabel.string = "x"+love;
+
         cc.log("startGame:"+cc.sys.localStorage.getItem("itemName"));
         this.name = this.getSpelling(cc.sys.localStorage.getItem("itemName"));
 
@@ -115,6 +131,10 @@ cc.Class({
     },
 
     onLoad () {
+        var goldCoin = cc.sys.localStorage.getItem("goldCoin");
+        var love = cc.sys.localStorage.getItem("love");
+        this.coinLabel.string = "x"+goldCoin;
+        this.loveLabel.string = "x"+love;
     },
 
     start () {

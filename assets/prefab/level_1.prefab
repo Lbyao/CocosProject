@@ -1195,8 +1195,12 @@
     "sAudioSource": {
       "__uuid__": "f187ff55-b502-4287-8c4d-3b2ddc2e7321"
     },
-    "btClickAudioSource": null,
-    "imgClickAudioSource": null,
+    "btClickAudioSource": {
+      "__uuid__": "ce6e03d7-9167-4b2e-a6dc-e22632c7734f"
+    },
+    "imgClickAudioSource": {
+      "__uuid__": "a3e78602-e847-41dc-9c04-a306ca91cee8"
+    },
     "_id": ""
   },
   {
@@ -4650,6 +4654,15 @@
     },
     "guideNode": {
       "__id__": 5
+    },
+    "coinLabel": {
+      "__id__": 116
+    },
+    "loveLabel": {
+      "__id__": 110
+    },
+    "scoreLabel": {
+      "__id__": 122
     },
     "_id": ""
   },

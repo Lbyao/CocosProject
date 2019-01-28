@@ -33,6 +33,7 @@ cc.Class({
         this.state = BallState.Invalid;
         this.runTime = 0;
         this.cha = 0;
+        //Drum.js
         global.event.on("click_drum", this.clickDrum.bind(this));
         global.event.on("state", this.setState.bind(this));
     },
@@ -82,8 +83,12 @@ cc.Class({
                 this.state = BallState.MissState;
                 global.event.fire("ball_in", "miss");
                 break;
-            case BallState.SuccessState:
+            case BallState.SuccessState: 
+                //level.js
+                global.event.fire("addSorce");
+                // GameWorld.js
                 global.event.fire("ball_grade", "perfect");
+                //Drum.js
                 global.event.fire("ball_in", "success");
                 this.state = BallState.SuccessState;
                 var action = cc.fadeOut(0.2);

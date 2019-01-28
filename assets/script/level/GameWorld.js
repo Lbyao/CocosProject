@@ -33,7 +33,9 @@ cc.Class({
         this.level = cc.instantiate(this.levelPrefads[0]);
         this.level.parent = this.node;
         this.showGameLevel();
+        //BallJson.js
         global.event.on("ball_grade",this.showGrade.bind(this));
+        // .js
         global.event.on("start_game",this.startGame.bind(this));
 
         // addEscEvent = function(node){
@@ -64,6 +66,8 @@ cc.Class({
     },
 
     startGame(score) {
+        var love = cc.sys.localStorage.getItem("love");
+        cc.sys.localStorage.setItem("love",love-1);
         this.gameLevel.active = 0;
         this.level.getComponent("Level").startGame(score);
     },

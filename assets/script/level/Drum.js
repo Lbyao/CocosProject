@@ -80,7 +80,7 @@ cc.Class({
         this.tpNode.on(cc.Node.EventType.TOUCH_END, function () {
             this.fadeOut(this.tpNode)
         }, this);
-
+        //BallJson.js
         global.event.on("ball_in", this.ballIn.bind(this));
     },
 
