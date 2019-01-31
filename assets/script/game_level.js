@@ -48,6 +48,7 @@ cc.Class({
         var score=0;
         var that = this;
         this.simpleNode.on(cc.Node.EventType.TOUCH_START,function() {
+            global.event.fire("btnClick");
             that.simpleNode.opacity = 0;
             that.simplePNode.opacity = 255;
             that.commonNode.opacity = 255;
@@ -57,6 +58,7 @@ cc.Class({
             score = 5;
         },this);
         this.commonNode.on(cc.Node.EventType.TOUCH_START,function() {
+            global.event.fire("btnClick");
             that.simpleNode.opacity = 255;
             that.simplePNode.opacity = 0;
             that.commonNode.opacity = 0;
@@ -66,6 +68,7 @@ cc.Class({
             score = 8;
         },this);
         this.hardNode.on(cc.Node.EventType.TOUCH_START,function() {
+            global.event.fire("btnClick");
             that.simpleNode.opacity = 255;
             that.simplePNode.opacity = 0;
             that.commonNode.opacity = 255;
@@ -75,12 +78,20 @@ cc.Class({
             score = 12;
         },this);
         this.startNode.on(cc.Node.EventType.TOUCH_START,function() {
+            global.event.fire("btnClick");
             cc.log(score)
             if(score>0){
                 //GameWorld.js
                 global.event.fire("start_game",score);
+                that.node.active = false;
             }
         },this);
+
+        global.event.on("setActive",this.setActive.bind(this));
+    },
+
+    setActive(result){
+        this.node.active = result;
     },
 
     start () {

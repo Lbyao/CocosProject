@@ -33,16 +33,19 @@ cc.Class({
     },
 
     back(){
+        global.event.fire("btnClick");
         this.levelNode.getComponent("Level").backHome();
         this.pauseNode.active = false;
     },
 
     restart(){
+        global.event.fire("btnClick");
         this.levelNode.getComponent("Level").resetGame();
         this.pauseNode.active = false;
     },
 
     resume(){
+        global.event.fire("btnClick");
         this.levelNode.getComponent("Level").resumeGame();
         this.pauseNode.active = false;
     },

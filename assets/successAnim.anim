@@ -1,0 +1,83 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "successAnim",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 1.5,
+  "sample": 20,
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "props": {
+      "rotation": [
+        {
+          "frame": 0,
+          "value": 360
+        },
+        {
+          "frame": 1,
+          "value": 0
+        }
+      ],
+      "opacity": [
+        {
+          "frame": 0,
+          "value": 0
+        },
+        {
+          "frame": 1,
+          "value": 255
+        }
+      ],
+      "scale": [
+        {
+          "frame": 0,
+          "value": {
+            "__type__": "cc.Vec2",
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "frame": 1,
+          "value": {
+            "__type__": "cc.Vec2",
+            "x": 1,
+            "y": 1
+          }
+        }
+      ]
+    },
+    "paths": {
+      "dialog_game_card_play_next": {
+        "props": {
+          "opacity": [
+            {
+              "frame": 1,
+              "value": 0
+            },
+            {
+              "frame": 1.5,
+              "value": 255
+            }
+          ]
+        }
+      },
+      "dialog_game_card_refresh": {
+        "props": {
+          "opacity": [
+            {
+              "frame": 1,
+              "value": 0
+            },
+            {
+              "frame": 1.5,
+              "value": 255
+            }
+          ]
+        }
+      }
+    }
+  },
+  "events": []
+}

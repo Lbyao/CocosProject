@@ -41,20 +41,25 @@ cc.Class({
     // LIFE-CYCLE CALLBACKS:
 
     playBg(){
-        let music = this.musicNode.getComponent("MusicUtil");
-        music.setMainMusic('main_bgm.mp3');
-        var id = music.playTone("main");
-        music.loop(id);
+        
+        this.music.setMainMusic('main_bgm.mp3');
+        var id = this.music.playTone("main");
+        this.music.loop(id);
     },
 
     pauseBg(){
-        let music = this.musicNode.getComponent("MusicUtil");
-        music.stopMain();
+        // let music = this.musicNode.getComponent("MusicUtil");
+        // cc.log("this.music:"+this.music);
+        // this.music.stopMain();
+        //musicUtil.js
+        global.event.fire("stopMain");
     },
 
     onLoad () {
-        this.playBg();
+        this.music = this.musicNode.getComponent("MusicUtil");
+        //levelCtrl.js
         global.event.on("pauseBg",this.pauseBg.bind(this));
+        this.playBg();
         var goldCoin = cc.sys.localStorage.getItem("goldCoin");
         var love = cc.sys.localStorage.getItem("love");
         var mode = cc.sys.localStorage.getItem("mode");

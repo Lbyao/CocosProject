@@ -74,7 +74,7 @@ cc.Class({
                 this.state = BallState.Invalid;
                 break;
             case BallState.MissState:
-                console.log("miss")
+                cc.log("miss state");
                 // setTimeout(function () {
                 //     cc.log("destroy")
                 //     that.node.destroy();
@@ -82,14 +82,20 @@ cc.Class({
                 global.event.fire("ball_grade", "miss");
                 this.state = BallState.MissState;
                 global.event.fire("ball_in", "miss");
+                global.event.fire("ballMiss");
+                // guide.js
+                global.event.fire("GuideBallOver");
                 break;
             case BallState.SuccessState: 
-                //level.js
+                cc.log("success state");
+                // level.js
                 global.event.fire("addSorce");
                 // GameWorld.js
                 global.event.fire("ball_grade", "perfect");
-                //Drum.js
+                // Drum.js
                 global.event.fire("ball_in", "success");
+                // guide.js
+                global.event.fire("GuideBallOver");
                 this.state = BallState.SuccessState;
                 var action = cc.fadeOut(0.2);
                 var sequence = cc.sequence(action, cc.callFunc(() => {

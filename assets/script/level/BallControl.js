@@ -31,8 +31,8 @@ cc.Class({
 
     onLoad () {
         cc.loader.loadRes("json/json_easy",function (err,jsonAssest) {
-             ballInfo = jsonAssest.json.data;
-             speed = jsonAssest.json.speed;
+            ballInfo = jsonAssest.json.data;
+            speed = jsonAssest.json.speed;
             //  console.log("ballinfo="+ballInfo[0].note+",speed:"+speed)
         });
     },
@@ -95,5 +95,5 @@ cc.Class({
         //     console.log(e.time)
         // }) ;         
     },
-   
+
 });

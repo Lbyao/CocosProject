@@ -140,6 +140,11 @@ cc.Class({
         global.event.on("btnClick",this.playButtonClick.bind(this));
 
         global.event.on("btnClick",this.playImgClick.bind(this));
+        //homeCtrl.js
+        global.event.on("stopMain",this.stopMain.bind(this));
+        //level.js
+        global.event.on("setMainMusic",this.setMainMusic.bind(this));
+        global.event.on("playTone",this.playTone.bind(this));
     },
 
     start () {

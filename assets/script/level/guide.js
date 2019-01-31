@@ -46,16 +46,21 @@ cc.Class({
     //    this.play();
     //    console.log("in newBall"+ballInfo)
     //    this.newBall(ballInfo,speed);
-
+        //Level.js
+        global.event.on("loadJson",this.loadJson.bind(this));
+        global.event.on("startGuideGame",this.startGame.bind(this));
+        global.event.on("resetBallList",this.resetBallList.bind(this));
+        //balljson.js
+        global.event.on("GuideBallOver",this.ballOver.bind(this));
         this.ballNodeList = [];
     },
 
-    startGame(music,score){
+    startGame(score){
         var ballInfo;
         var speed;
         var that = this;
         this.position = 0;
-        this.music = music;
+        // this.music = music;
         cc.log(score);
         // this.musicNode.getComponent("MusicUtil").playMain();
         
@@ -64,8 +69,12 @@ cc.Class({
     loadJson(path){
         var ballInfo;
         var speed;
+        // this.ballSize = 0;
+        // this.missSize = 0;
         var that = this;
         this.success = false;
+        global.event.on("ballOver",this.ballOver.bind(this));
+
             cc.loader.loadRes(("json/"+path),function (err,jsonAssest) {
                 if (err) {
                     console.log(err);
@@ -80,6 +89,9 @@ cc.Class({
                 global.event.fire("loadSuccess",true);
                 ballInfo = jsonAssest.json.data;
                 speed = jsonAssest.json.speed;
+
+                that.getMissBallSize(ballInfo);
+
                 cc.log("ballinfo="+ballInfo.length+",speed:"+speed)
                 that.newBall(ballInfo,speed); 
                 
@@ -87,13 +99,26 @@ cc.Class({
         
     },
 
+    getMissBallSize(ballInfo){
+        this.ballSize = 0;
+        for(let i=0;i<ballInfo.length;i++){
+            if(ballInfo[i].tone !== "-"){
+                this.ballSize++;
+            }
+        }
+        //显示有点慢
+        this.missSize = Math.round((this.ballSize*7)/20);
+        //Level.js
+        global.event.fire("missSize",this.missSize);
+    },
+
     loadSuccess(){
         cc.log("加载完成！！！！！！！！！！");
     },
 
-    resetGame (music,score) {
+    resetGame (score) {
         this.resetBallList();
-        this.startGame(music,score);
+        this.startGame(score);
     },
 
     pauseGame (){
@@ -130,9 +155,11 @@ cc.Class({
         console.log(length);
         var i=0;
         var that = this;
+        
         this.position = this.endNode.position.x+119;
         console.log("endNode:" + this.position)
         for(let i=0;i<length;i++){
+            
             let datas = {
                 "position":  this.position,
                 "ballColor": ballInfo[i].tone,
@@ -165,13 +192,15 @@ cc.Class({
             }
             this.position = (1000*60.0*0.42)/(speed*ballInfo[i].note*ballInfo[i].power*ballInfo[i].special)+this.position;
         }
-        while(true){
-            console.log("current:"+this.music.getCurrentTime());
-            if(this.music.getCurrentTime()>0){
-                this.music.setCurrentTime(0);
-                break;
-            }
-        }
+
+        // while(true){
+        //     console.log("current:"+this.music.getCurrentTime());
+        //     if(this.music.getCurrentTime()>0){
+        //         this.music.setCurrentTime(0);
+        //         break;
+        //     }
+        // }
+        
         global.event.fire("state",2);
     },
 
@@ -182,6 +211,15 @@ cc.Class({
         }
 
         return length;
+    },
+
+    ballOver(){
+        this.ballSize--;
+        cc.log(this.ballSize+"s:"+(this.ballSize=='0'));
+        if(this.ballSize=='0'){
+            //level.js
+            global.event.fire("ballSuccessed");
+        }
     },
 
     start () {

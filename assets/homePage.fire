@@ -41,8 +41,8 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 0.4074074074074074,
-      "y": 0.4074074074074074,
+      "x": 0.41770833333333335,
+      "y": 0.41770833333333335,
       "z": 1
     },
     "_quat": {
@@ -54,7 +54,7 @@
     },
     "_zIndex": 0,
     "groupIndex": 0,
-    "autoReleaseAssets": false,
+    "autoReleaseAssets": true,
     "_id": "c498e574-8b92-4d5e-96f1-c1392e94ae69"
   },
   {
@@ -78,6 +78,9 @@
         "__id__": 253
       },
       {
+        "__id__": 240
+      },
+      {
         "__id__": 208
       },
       {
@@ -91,16 +94,13 @@
       },
       {
         "__id__": 284
-      },
-      {
-        "__id__": 240
       }
     ],
     "_active": true,
     "_level": 1,
     "_components": [
       {
-        "__id__": 303
+        "__id__": 304
       }
     ],
     "_prefab": null,
@@ -12488,7 +12488,11 @@
     ],
     "_active": false,
     "_level": 2,
-    "_components": [],
+    "_components": [
+      {
+        "__id__": 303
+      }
+    ],
     "_prefab": null,
     "_opacity": 255,
     "_color": {
@@ -13268,6 +13272,16 @@
     "_state": 0,
     "_atlas": null,
     "_id": "a7vVqfF4xDhq2RnRdt23fP"
+  },
+  {
+    "__type__": "cc.BlockInputEvents",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 284
+    },
+    "_enabled": true,
+    "_id": "02qhineMdITr85o+09nnTW"
   },
   {
     "__type__": "cc.Canvas",

@@ -68,8 +68,11 @@ cc.Class({
     startGame(score) {
         var love = cc.sys.localStorage.getItem("love");
         cc.sys.localStorage.setItem("love",love-1);
-        this.gameLevel.active = 0;
-        this.level.getComponent("Level").startGame(score);
+        //gameLevel.js
+        // global.event.fire("setActive",0);
+        //level.js
+        global.event.fire("startGame",score);
+        // this.level.getComponent("Level").startGame(score);
     },
 
     showGrade(clickGrade){

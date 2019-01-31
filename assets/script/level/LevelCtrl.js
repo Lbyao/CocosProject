@@ -32,7 +32,7 @@ cc.Class({
                     name = name.substring(name.length-2,name.length);
                     console.log("Item " + name+ ' clicked');
                     cc.sys.localStorage.setItem("itemName",name);
-        
+                    
                     // var label = this.node.getComponent(cc.Label);
                     // cc.log(that.label.string); 
                     // Global.MusicName = that.label.string;
@@ -48,6 +48,8 @@ cc.Class({
                             cc.log(params);
                         });
                     }
+                    //homeCtrl.js
+                    global.event.fire("pauseBg");
                     //musicUtil.js
                     global.event.fire("btnClick");
                     cc.director.loadScene("game");
@@ -127,5 +129,9 @@ cc.Class({
         
     },
 
+
+    unLock(){
+        
+    },
     // update (dt) {},
 });
