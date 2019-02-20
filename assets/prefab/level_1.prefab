@@ -1207,6 +1207,15 @@
     "imgClickAudioSource": {
       "__uuid__": "a3e78602-e847-41dc-9c04-a306ca91cee8"
     },
+    "successAudioSource": {
+      "__uuid__": "793eb737-2b79-4b84-9ba1-c15dced72d9c"
+    },
+    "failAudioSource": {
+      "__uuid__": "71529bf0-61c3-43cc-86d2-0b69a7bf2f61"
+    },
+    "animalAudioClips": [
+      null
+    ],
     "_id": ""
   },
   {
@@ -7396,6 +7405,17 @@
     "rightStart": {
       "__id__": 211
     },
+    "sprites": [
+      {
+        "__uuid__": "639d4e41-5654-475e-aae7-9a8c2d1126df"
+      },
+      {
+        "__uuid__": "d0d9d7ba-b940-4766-bd8c-aa5c5412dbb9"
+      },
+      {
+        "__uuid__": "fd24bae1-7cc7-4355-86c3-5e8025d4049f"
+      }
+    ],
     "_id": ""
   },
   {

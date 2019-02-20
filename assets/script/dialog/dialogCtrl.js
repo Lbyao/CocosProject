@@ -31,6 +31,10 @@ cc.Class({
         loveLabel:{
             default:null,
             type: cc.Label
+        },
+        imgSp:{
+            default: null,
+            type: cc.Sprite
         }
     },
 
@@ -77,6 +81,7 @@ cc.Class({
         cc.sys.localStorage.setItem("goldCoin",coin-0+30);
         this.goldCoinLabel.string = "x"+cc.sys.localStorage.getItem("goldCoin");
         cc.log("上传得金币");
+        jsb.reflection.callStaticMethod("org/cocos2dx/javascript/AppActivity", "selectImg","()V");
     },
 
     showLove(){
@@ -113,6 +118,30 @@ cc.Class({
                 this.goldCoinLabel.string = "x"+cc.sys.localStorage.getItem("goldCoin");
                 this.loveLabel.string = "x"+cc.sys.localStorage.getItem("love");
                 break;
+        }
+    },
+
+    setImgPath(filepath){
+        var size = 0;
+        var data = jsb.fileUtils.getDataFromFile(filepath);
+        var spriteFrame = new cc.SpriteFrame(filepath);
+        this.imgSp.spriteFrame = spriteFrame;
+        cc.log("file size:" + size);
+        var xhr = new XMLHttpRequest(); 
+        //var xhr = new XMLHttpRequest();     public static final String SAVE_IMG = "http://www.dadpat.com/game/rhythm/img/save.do";
+        xhr.open('POST', "http://www.dadpat.com/game/rhythm/img/save.do");
+        xhr.setRequestHeader("Authorization", "9aaf11e89ac6d56758d0c2a12439c4edeyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MzY4MTgwMzksInVzZXJJZCI6IjlhYWYxMWU4OWFjNmQ1Njc1OGQwYzJhMTI0MzljNGVkIiwibG9naW5OYW1lIjoiMTMyNTM1ODc2NjcifQ._Yv1jJSLY6S-LkV58He2PLflVjJBLYvNr8DVhciM_6M");
+        xhr.setRequestHeader('Content-Type', 'application/octet-stream');
+        xhr.send(data);
+        
+        xhr.onreadystatechange = function () {  
+            if (xhr.readyState == 4) {  
+                if (xhr.status == 200) {  
+                    var m = xhr.responseText;  
+                    var response = xhr.responseText.substring(0, 100) + "...";  
+                    cc.log (m);  
+                }
+            }  
         }
     },
 

@@ -30,34 +30,22 @@ cc.Class({
 
     onLoad () {
         cc.log("name:"+Global.MusicName);
+
+        var mode = cc.sys.localStorage.getItem("mode");
         this.level = cc.instantiate(this.levelPrefads[0]);
-        this.level.parent = this.node;
-        this.showGameLevel();
+            this.level.parent = this.node;
+        if(mode == 0){
+            this.showGameLevel();
+        }else{
+            this.connectDrum();
+        }
         //BallJson.js
         global.event.on("ball_grade",this.showGrade.bind(this));
-        // .js
-        global.event.on("start_game",this.startGame.bind(this));
-
-        // addEscEvent = function(node){
-        //     cc.eventManager.addListener({
-        //         event: cc.EventListener.KEYBOARD,
-        //         onKeyPressed:  function(keyCode, event){
-        //             cc.game.end();
-        //             // cc.hb.uiMgr.openPanel("Hall/alertBox/AlertBox",cc.hb.alertMgr.ANIMATE_CENTENT,"确认退出游戏吗？",function(success){
-        //             //         if (success){}
-        //             //     }
-        //             // );
-        //         },
-        //         onKeyReleased: function(keyCode, event){
-        //             if(keyCode == cc.KEY.back){
-        //                 cc.log("")
-        //             }
-        //         }
-        //     }, node);
-        // }
-
+        // game_level.js
+        global.event.on("start_game",this.startGame.bind(this));      
+        //connectFailDialog.js
+        global.event.on("connect",this.connectDrum.bind(this));  
     },
-
     showGameLevel() {
         this.gameLevel = cc.instantiate(this.gameLevelPrefab);
         this.gameLevel.parent = this.node;
@@ -91,12 +79,51 @@ cc.Class({
         grade.runAction(scaleTo);
     },
 
-    start () {
+    // start () {},
+    /**
+     * 连接鼓
+     */
+    connectDrum(){
+        //缺少加载动画
+        var address =  cc.sys.localStorage.getItem("BTAddress");
+        jsb.reflection.callStaticMethod("org/cocos2dx/javascript/AppActivity", "connectDrum","(Ljava/lang/String;)V", address);
+    },
 
+    /**
+     * 接收原生返回的socket消息
+     * @param {string} msg stringjson消息
+     */
+    setMsg(msg){
+        var result = JSON.parse(msg);
+        var action = result.action;
+        var resultCode = result.body.result_code;
+
+        if (resultCode!=-1) {
+            //isSuccess没声明
+            if (action=="ryth_game" && isSuccess) {
+                // 接收的打击的节拍
+                var tone = result.body.tone;
+                //Drum.js
+                global.event.fire("drumClick",tone);
+            }else{
+                isSuccess = true;
+                // 连接鼓的socket成功了
+                this.showGameLevel();
+            }
+        }else{
+            // 连接失败
+        }
+    },
+
+    showFailDialog(){
+        //connectFailDialog.js
+        global.event.fire("showDialog");
     },
 
     onDestroy(){
         // global.event.off("ball_grade",this.showGrade)
+        
+        // cc.Game.EVENT_HIDE
     }
     // update (dt) {},
 });

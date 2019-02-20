@@ -57,17 +57,17 @@ cc.Class({
 
     backHome(){
         //todo 添加off方法
-        global.event.off("setMainMusic");
-        global.event.off("playTone");
-        global.event.off("startGuideGame");
-        global.event.off("loadSuccess");
-        global.event.off("addSorce");
-        global.event.off("loadJson");
-        global.event.off("ballMiss");
-        global.event.off("missSize");
-        global.event.off("startGame");
-        global.event.off("updateLove");
-
+        // global.event.off("setMainMusic");
+        // global.event.off("playTone");
+        // global.event.off("startGuideGame");
+        // global.event.off("loadSuccess");
+        // global.event.off("addSorce");
+        // global.event.off("loadJson");
+        // global.event.off("ballMiss");
+        // global.event.off("missSize");
+        // global.event.off("startGame");
+        // global.event.off("updateLove");
+        
         global.event.fire("btnClick");
         let music = this.musicNode.getComponent("MusicUtil");
         music.stopMain();
@@ -84,6 +84,8 @@ cc.Class({
         // this.guideNode.getComponent("guide").pauseGame();
         //pauseCtrl.js
         global.event.fire("showPause");
+        this.isStart = false;
+        this.isPause = true;
     },
 
     pauseMB(){
@@ -94,12 +96,15 @@ cc.Class({
 
     // 继续
     resumeGame () {
+        this.isStart = true;
         let music = this.musicNode.getComponent("MusicUtil");
         music.resumeMain();
         this.guideNode.getComponent("guide").resumeGame();
+        this.isPause = false;
     },
     // 重新
     resetGame () {
+        this.isStart = true;
         global.event.fire("btnClick");
         cc.log("click");
         let music = this.musicNode.getComponent("MusicUtil");
@@ -124,6 +129,7 @@ cc.Class({
         //guide.js
         global.event.fire("loadJson",this.path);
         // this.guideNode.getComponent("guide").loadJson(this.path);
+        this.isStart = true;
     },
     // LIFE-CYCLE CALLBACKS:
 
@@ -185,6 +191,11 @@ cc.Class({
     },
 
     onLoad () {
+        this.isStart= false;
+        this.isPause = false;
+        this.keyDown = 0;
+        cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
+        cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
         
         this.itemName = cc.sys.localStorage.getItem("itemName");
         this.levelNumLabel.string = "关卡"+this.getLevelNum(this.itemName);
@@ -208,6 +219,17 @@ cc.Class({
         //successDialog.js
         global.event.on("nextMusic",this.nextMusic.bind(this));
         global.event.on("resetGame",this.resetGame.bind(this));
+        //监听应用是否在后台
+        cc.game.on(cc.game.EVENT_HIDE, event=>{
+            return cc.log('emit cc.game.EVENT_HIDE!');
+        });
+        //监听应用是否从后台显示
+        cc.game.on(cc.game.EVENT_SHOW, event=>{
+            if(this.isStart==false&&this.isPause==true){
+                this.pauseMB();
+            }
+            return cc.log('emit cc.game.EVENT_SHOW!');
+        });
     },
 
     getLove(){
@@ -231,6 +253,9 @@ cc.Class({
         if(this.missSize>=0){
             this.missNumLabel.string = "允许漏击"+this.missSize+"个";
         }else{
+            this.isStart = false;
+            // global.event.fire("btnClick");
+            global.event.fire("playTone","fail");
             // this.failNode.active = true;
             // this.pauseMB();
         }
@@ -238,29 +263,74 @@ cc.Class({
     },
 
     ballSuccessed(){
+        // global.event.fire("btnClick");
+        global.event.fire("playTone","success");
+        this.isStart = false;
         cc.log("ballSuccessed");
         var timeCallback = function (dt) {
             cc.log("time: " + dt);
-            var score = this.scoreLabel.string;
+            var mscore = this.scoreLabel.string;
             var afterScore = 0;
             if(cc.sys.localStorage.getItem(this.itemName)===null){
-                cc.sys.localStorage.setItem(this.itemName,score);
+                cc.sys.localStorage.setItem(this.itemName,mscore);
             }else{
                 var s = cc.sys.localStorage.getItem(this.itemName);
                 afterScore = s;
-                if(s<score){
-                    cc.sys.localStorage.setItem(this.itemName,score);
+                if(s<mscore){
+                    cc.sys.localStorage.setItem(this.itemName,mscore);
                 }
             }
+
+            cc.log("unlock:"+this.itemName)
+            var infos = cc.sys.localStorage.getItem("level"+this.itemName);
+            if(infos==null){
+                var levelInfo={
+                    score: this.score,
+                    simaple:null,
+                    common:null,
+                    difficulty: null,
+                    name: this.itemName
+                }
+    
+                switch(this.score){
+                    case 5:
+                        levelInfo.simaple = mscore;
+                        break;
+                    case 8:
+                        levelInfo.common = mscore;
+                        break;
+                    case 12:
+                        levelInfo.difficulty = mscore;
+                        break;
+                }
+    
+                cc.sys.localStorage.setItem("level"+this.itemName,JSON.stringify(levelInfo));
+            }else{
+                var ins = JSON.parse(infos);
+                switch(this.score){
+                    case 5:
+                        ins.simaple = mscore;
+                        break;
+                    case 8:
+                        ins.common = mscore;
+                        break;
+                    case 12:
+                        ins.difficulty = mscore;
+                        break;
+                }
+    
+                cc.sys.localStorage.setItem("level"+this.itemName,JSON.stringify(ins));
+            }
+
             var success = this.successNode.getComponent("successDialog");
-            success.setScore(score,afterScore);
+            success.setScore(mscore,afterScore,this.itemName);
             // global.event.fire("successScore",score,afterScore);
             this.successNode.active = true;
-            this.pauseMB();
+            // this.pauseMB();
         }
         this.scheduleOnce(timeCallback, 2);
-
-        global.event.fire("unlock",this.itemName);
+        
+        // global.event.fire("unlock",this.itemName);
     },
 
     getLevelNum(itemName){
@@ -290,4 +360,31 @@ cc.Class({
     // start () {},
 
     // update (dt) {},
+    onKeyDown: function (event) {
+        cc.log(event.keyCode);
+        this.keyDown++;
+        switch(event.keyCode) {
+
+            case 6:
+                cc.log("点击down返回按钮"+this.keyDown);
+                if(this.isStart&&this.keyDown==2){
+                    this.keyDown = 0;
+                    this.pauseGame();
+                }else if(this.keyDown==2){
+                    this.keyDown = 0;
+                    this.backHome();
+                }
+                break;
+        }
+    },
+
+    onKeyUp: function (event) {
+        cc.log(event.keyCode);
+        switch(event.keyCode) {
+            case 6:
+                cc.log("点击up返回按钮");
+                
+                break;
+        }
+    }
 });

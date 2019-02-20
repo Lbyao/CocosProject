@@ -32,11 +32,16 @@ cc.Class({
             default:null,
             type:cc.Sprite
         },
+        sprites:{
+            default:[],
+            type:cc.SpriteFrame
+        },
     },
 
-    setScore(score,afterScore){
+    setScore(score,afterScore,itemName){
         this.score = score;
         this.afterScore = afterScore;
+        this.itemName = itemName;
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -44,6 +49,32 @@ cc.Class({
     onLoad () {
         this.scoreLabel.string = this.score;
         this.afterScoreLabel.string = this.afterScore;
+        cc.log(this.itemName);
+        var result = cc.sys.localStorage.getItem("level"+this.itemName);
+        cc.log(result);
+        var levelInfo = JSON.parse(result);
+
+        if(levelInfo.simaple!=null){
+            this.leftStart.spriteFrame = this.sprites[0];
+        }
+        if(levelInfo.common!=null){
+            this.centerStart.spriteFrame = this.sprites[1];
+        }
+        if(levelInfo.difficulty!=null){
+            this.rightStart.spriteFrame = this.sprites[2];
+        }
+
+        // switch(levelInfo.score){
+        //     case 5:
+        //         leftStart.getComponent(cc.Sprite).spriteFrame = this.sprites[0];
+        //         break;
+        //     case 8:
+        //         centerStart.getComponent(cc.Sprite).spriteFrame = this.sprites[1];
+        //         break;
+        //     case 12:
+        //         rightStart.getComponent(cc.Sprite).spriteFrame = this.sprites[2];
+        //         break;
+        // }
     },
 
     nextLevel(){
@@ -62,6 +93,12 @@ cc.Class({
 
     animalSound(){
         global.event.fire("btnClick");
+
+
+        // global.event.fire("setMainMusic","game_success.wav");
+        // global.event.fire("playTone","main");
+
+        global.event.fire("playTone","success");
     },
 
     start () {

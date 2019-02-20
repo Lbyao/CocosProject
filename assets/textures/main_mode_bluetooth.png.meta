@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "1c310eb9-6537-4b59-a900-9bbb67770386",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "main_mode_bluetooth": {
+      "ver": "1.0.3",
+      "uuid": "188b8b6e-e173-4f5e-954f-3802306a13ce",
+      "rawTextureUuid": "1c310eb9-6537-4b59-a900-9bbb67770386",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": -0.5,
+      "trimX": 6,
+      "trimY": 7,
+      "width": 116,
+      "height": 115,
+      "rawWidth": 128,
+      "rawHeight": 128,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

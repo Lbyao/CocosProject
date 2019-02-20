@@ -39,6 +39,18 @@ cc.Class({
             type: cc.AudioClip,
             default: null
         },
+        successAudioSource: {
+            type: cc.AudioClip,
+            default: null
+        },
+        failAudioSource: {
+            type: cc.AudioClip,
+            default: null
+        },
+        animalAudioClips:{
+            type:cc.AudioClip,
+            default:[]
+        }
     },
 
     setMainMusic: function(path){
@@ -119,6 +131,12 @@ cc.Class({
             case "main":
                 id = this.playMain();
                 break;
+            case "success":
+                this.playSuccessSound();
+                break;
+            case "fail":
+                this.playFailSound();
+                break;
         }
         return id;
     },
@@ -128,12 +146,24 @@ cc.Class({
     },
 
     playButtonClick(){
+        cc.log("btn click");
         this.buttonClick = cc.audioEngine.playEffect(this.btClickAudioSource,false);
     },
 
     playImgClick(){
         this.imgClick = cc.audioEngine.playEffect(this.imgClickAudioSource,false);
     },
+
+    
+    playSuccessSound(){
+        cc.log("play success");
+        this.successId = cc.audioEngine.play(this.successAudioSource,false,1);
+    },
+
+    playFailSound(){
+        cc.log("play fail");
+        this.failId = cc.audioEngine.play(this.failAudioSource,false,1);
+    }, 
 
     onLoad(){
         //levelCtrl.js
@@ -145,7 +175,10 @@ cc.Class({
         //level.js
         global.event.on("setMainMusic",this.setMainMusic.bind(this));
         global.event.on("playTone",this.playTone.bind(this));
+        // global.event.on("successSound",this.playSuccessSound.bind(this));
+        // global.event.on("failSound",this.playFailSound.bind(this));
     },
+
 
     start () {
 

@@ -52,7 +52,7 @@ cc.Class({
 
     onLoad() {
         var that = this;
-
+        
         this.bpNode.on(cc.Node.EventType.TOUCH_START, function () {
             global.event.fire("click_drum", "B");
             this.musicNode.getComponent("MusicUtil").playB();
@@ -80,8 +80,10 @@ cc.Class({
         this.tpNode.on(cc.Node.EventType.TOUCH_END, function () {
             this.fadeOut(this.tpNode)
         }, this);
-        //BallJson.js
+        // BallJson.js
         global.event.on("ball_in", this.ballIn.bind(this));
+        // GameWorld.js
+        global.event.on("drumClick",this.drumClick.bind(this));
     },
 
     ballIn(tone) {
@@ -109,6 +111,33 @@ cc.Class({
                 break;
         }
     },
+
+    drumClick(tone){
+        switch(tone){
+            case "B":
+                global.event.fire("click_drum", "B");
+                setTimeout(function() {
+                    this.fadeOut(this.bpNode);
+                }, 200);
+                this.fadeIn(this.bpNode);
+                break;
+            case "T":
+                global.event.fire("click_drum", "T");
+                setTimeout(function() {
+                    this.fadeOut(this.tpNode);
+                }, 200);
+                this.fadeIn(this.tpNode);
+                break;
+            case "S":
+                global.event.fire("click_drum", "S");
+                setTimeout(function() {
+                    this.fadeOut(this.spNode);
+                }, 200);
+                this.fadeIn(this.spNode);
+                break;
+        }
+    },
+
     /**
      * 渐进的动画
      * @param {cc.Node} node 节点
