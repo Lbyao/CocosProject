@@ -74,21 +74,22 @@ cc.Class({
         var that = this;
         this.success = false;
         global.event.on("ballOver",this.ballOver.bind(this));
-
-            cc.loader.loadRes(("json/"+path),function (err,jsonAssest) {
+        
+            cc.loader.load(path,function (err,jsonAssest) {
                 if (err) {
                     console.log(err);
                     return;
                 }
-
+                jsb.reflection.callStaticMethod("org/cocos2dx/javascript/AppActivity", "jsToast","(Ljava/lang/String;)V",JSON.stringify(jsonAssest));
                 that.loadSuccess();
                 // that.startGame(music,score);
                 that.success = true;
                 cc.log("success="+that.success);
                 //Level.js
                 global.event.fire("loadSuccess",true);
-                ballInfo = jsonAssest.json.data;
-                speed = jsonAssest.json.speed;
+                // JSON.stringify(jsonAssest)
+                ballInfo = jsonAssest.data;
+                speed = jsonAssest.speed;
 
                 that.getMissBallSize(ballInfo);
 

@@ -118,12 +118,15 @@ cc.Class({
     startGame (score) {
         // this.scoreLabel.string = "0";
         this.itemName = cc.sys.localStorage.getItem("itemName");
+        var unzipPath = cc.sys.localStorage.getItem("unzipPath");
         global.event.fire("getLove");
         cc.log("itemName:"+this.itemName)
-        this.name = this.getSpelling(this.itemName);
+        // this.name = this.getSpelling(this.itemName);
+        this.name = this.itemName;
         this.score = score;
         var isStart = true;
-        this.path = this.getDifficulty(score);
+        this.path = this.getDifficulty(this.itemName,unzipPath,score);
+        // this.path = unzipPath+"/"+ this.itemName;
         //监听播放音乐guide.js
         global.event.on("loadSuccess",this.startMusic.bind(this));
         //guide.js
@@ -135,7 +138,7 @@ cc.Class({
 
     startMusic(){
         //musicUtil.js
-        global.event.fire("setMainMusic", 'bgm_'+this.name+'.wav');
+        global.event.fire("setMainMusic", this.name);
         global.event.fire("playTone", "main");
 
         // let music = this.musicNode.getComponent("MusicUtil");
@@ -341,17 +344,17 @@ cc.Class({
         return first+"-"+last;
     },
 
-    getDifficulty(score){
+    getDifficulty(name,unzippath,score){
         var path;
         switch(score){
             case 5:
-                path = "json_easy_"+this.name;
+                path = unzippath+"/"+name+"/"+"json_easy.json";
                 break;
             case 8:
-                path = "json_common_"+this.name;
+                path = unzippath+"/"+name+"/"+"json_common.json";
                 break;
             case 12:
-                path = "json_difficulty_"+this.name;
+                path = unzippath+"/"+name+"/"+"json_difficulty.json";
                 break;
         }
         return path;

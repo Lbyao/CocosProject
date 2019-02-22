@@ -39,9 +39,29 @@ cc.Class({
     onLoad () {
         this.levels = ["00","01","02","03","10","11","12","13","20","21","22","23","30","31","32","33","40","41","42","43"];
         // global.event.on("unlock",this.unLock.bind(this));
-
+        this.needDownloads = ["00","01","02","03","10","11","12","13","20","21","22","23","30","31","32","33","40","41","42","43"];
         // var spriteFrame = new cc.SpriteFrame('/storage/emulated/0/Huawei/MagazineUnlock/magazine-unlock-01-2.3.1253-_46A529DBACA459632333408E1C590DA2.jpg');
         // this.testSprit.spriteFrame = spriteFrame;
+        this.index =0;
+        var downloadLevels = cc.sys.localStorage.getItem("DownloadLevels");
+        if(downloadLevels==null){
+            this.toastToJava("下载null");
+            this.plDownload(this.needDownloads);
+        }else{
+            this.toastToJava("下载");
+            //未测试
+            downloadLevels = JSON.parse(downloadLevels);
+            cc.log("onLoad downloadLevels:"+downloadLevels);
+            for (let index = 0; index < downloadLevels.length; index++) {
+                const element = downloadLevels[index];
+                //获取元素的位置
+                var idx = this.needDownloads.indexOf(element);
+                //删除指定位置的长度为1 的值
+                this.needDownloads.splice(idx,1);
+            }
+            cc.log("onLoad needDownloads:"+this.needDownloads);
+            this.plDownload(this.needDownloads);
+        }
 
         var that = this;
         for(var i=0;i<20;i++){
@@ -62,17 +82,6 @@ cc.Class({
                 if(info.difficulty!=null){
                     this.levelNodes[i].getChildByName("lock_star_n_right").getComponent(cc.Sprite).spriteFrame = this.sprites[2];
                 }
-                // switch(JSON.parse(result).score){
-                //     case 5:
-                //         this.levelNodes[i].getChildByName("lock_star_n_left").getComponent(cc.Sprite).spriteFrame = this.sprites[0];
-                //         break;
-                //     case 8:
-                //         this.levelNodes[i].getChildByName("lock_star_n_middle").getComponent(cc.Sprite).spriteFrame = this.sprites[1];
-                //         break;
-                //     case 12:
-                //         this.levelNodes[i].getChildByName("lock_star_n_right").getComponent(cc.Sprite).spriteFrame = this.sprites[2];
-                //         break;
-                // }
             }
 
             this.levelNodes[i].on('touchend', function (event) {
@@ -84,26 +93,28 @@ cc.Class({
                     name = name.substring(name.length-2,name.length);
                     console.log("Item " + name+ ' clicked');
                     cc.sys.localStorage.setItem("itemName",name);
-                    
-                    // var label = this.node.getComponent(cc.Label);
-                    // cc.log(that.label.string); 
-                    // Global.MusicName = that.label.string;
-                    // this.downLoad(); 
-                    // cc.log(cc.sys.localStorage.getItem("00")+"-----------getItem")
-                    that.itemsid = that.getDownloadId(name);
-                    cc.log("onLoad:"+that.itemsid);
-                    cc.log(cc.sys.localStorage.getItem(that.itemsid)+"-----------getItem")
-                    if(cc.sys.localStorage.getItem(that.itemsid)==null){
-                        var fileName = that.itemsid+".zip";
-                        var url = "http://www.dadpat.com/app/rhythm/"+fileName;
-                        that.downFile2Local(url,fileName,function(params) {
-                            cc.log(params);
-                        });
+                    that.itemsid = name;
+                    if(name=="00"){
+                        this.toastToJava("s:"+name);
+                        that.startDownload(name);
                     }else{
-                        cc.director.loadScene("game");
+                        //获取是否上一关解锁
+                        that.toastToJava("upid:"+name);
+                        var upid = that.getUpId(name);
+                        that.toastToJava("upid:"+upid);
+                        // var idd = this.itemsid.substring(0,1)+(this.itemsid.substring(1,2)-1);
+                        var isClick = cc.sys.localStorage.getItem("level"+upid);
+                        //不为null说明解锁了
+                        if(isClick!=null){
+                            that.startDownload(name);
+                            //homeCtrl.js
+                            global.event.fire("pauseBg");
+                        }else{
+                            that.toastToJava("请先通过上一个关卡<(￣3￣)> ！！");
+                        }
                     }
-                    //homeCtrl.js
-                    global.event.fire("pauseBg");
+                    
+
                     //musicUtil.js
                     global.event.fire("btnClick");
                     
@@ -114,7 +125,32 @@ cc.Class({
         }
     },
 
-    toastToJava:function(msg,isSuccess = false){
+    getUpId(nowId){
+        var levelId = "";
+        var s = nowId.substring(0,1);
+        var g = nowId.substring(1,2);
+        if(g==0){
+            levelId = s-1+""+3
+        }else if(g>0){
+            levelId = s+(g-1);
+        }
+        return levelId;
+    },
+
+    startDownload(itemid){
+        cc.log("onLoad:"+itemid);
+        cc.log(cc.sys.localStorage.getItem(itemid)+"-----------getItem")
+        this.toastToJava("s:"+itemid);
+        if(cc.sys.localStorage.getItem(itemid)==null){
+            var fileName = itemid+".zip";
+            var url = "http://www.dadpat.com/app/rhythm/"+fileName;
+            this.downFile2Local(url,fileName,this.backParams.bind(this));
+        }else{
+            cc.director.loadScene("game");
+        }
+    },
+
+    toastToJava(msg,isSuccess = false){
         if (cc.sys.OS_ANDROID == cc.sys.os) {
             //js调用android原生方法 path:build/jsb-link/frameworks/runtime-src/proj.android-studio/app/src/org/cocos2dx/javascript/
             jsb.reflection.callStaticMethod("org/cocos2dx/javascript/AppActivity", "jsToast","(Ljava/lang/String;)V", msg);
@@ -145,9 +181,7 @@ cc.Class({
         return id;
     },
 
-    start () {
-
-    },
+    // start () {},
 
     downFile2Local:function(url, fileName, callback){
         // data/data/org.cocos2d.TestProject/file/fileName jsb.fileUtils.getWritablePath() + fileName
@@ -162,8 +196,19 @@ cc.Class({
         this.downloader.setOnFileTaskSuccess(function(){   
             cc.log("下载成功!!"+"that.getDownloadId(that.itemID)"+that.itemsid+",itemid:"+that.itemsid);      
             // removeModelLoadingDialog();//删除加载中模态框
-            cc.director.loadScene("game");
-            that.progressNode.active = false;
+            // cc.director.loadScene("game");
+            var dlevels = cc.sys.localStorage.getItem("DownloadLevels");
+            if(dlevels==null){
+                var ls = [];
+                ls.push(that.itemsid);
+                cc.sys.localStorage.setItem("DownloadLevels",JSON.stringify(ls));
+            }else{
+                dlevels = JSON.parse(dlevels);
+                dlevels.push(that.itemsid);
+                cc.sys.localStorage.setItem("DownloadLevels",JSON.stringify(dlevels));
+            }
+            // cc.sys.localStorage.setItem("DownloadLevels",[this.itemsid]);
+            // that.progressNode.active = false;
             cc.sys.localStorage.setItem(that.itemsid,fullPath);
             if(callback){
                 callback(fullPath);
@@ -171,12 +216,12 @@ cc.Class({
         });
 
         this.downloader.setOnTaskProgress(function(task, bytesReceived, totalBytesReceived, totalBytesExpected) {
-            that.progressNode.active = true;
-            cc.log("已下载完成的大小："+bytesReceived);
-            cc.log("总大小:"+totalBytesReceived);
-            cc.log("预期总大小:"+totalBytesExpected);
-            cc.log("下载进度："+totalBytesReceived*1.0/totalBytesExpected);
-            that.progressNode.getComponent(cc.ProgressBar).progress = totalBytesReceived*1.0/totalBytesExpected;
+            // that.progressNode.active = true;
+            // cc.log("已下载完成的大小："+bytesReceived);
+            // cc.log("总大小:"+totalBytesReceived);
+            // cc.log("预期总大小:"+totalBytesExpected);
+            // cc.log("下载进度："+totalBytesReceived*1.0/totalBytesExpected);
+            // that.progressNode.getComponent(cc.ProgressBar).progress = totalBytesReceived*1.0/totalBytesExpected;
         });
 
         this.downloader.setOnTaskError(function(){  
@@ -187,6 +232,36 @@ cc.Class({
         
     },
 
+    /**
+     * 批量下载
+     */
+    plDownload(lists){
+        // var lists = ["10.zip","11.zip","12.zip","13.zip"];
+        this.p = [];
+        cc.log(lists);
+        if(this.index<lists.length){
+            this.itemsid = lists[this.index]
+            var url = "http://www.dadpat.com/app/rhythm/"+lists[this.index]+".zip";
+            this.downFile2Local(url,lists[this.index],this.backParams.bind(this));
+        }
+        this.index = this.index-0+1;
+    },
+    /**
+     * 下载成功的返回路径path
+     * @param {path} params 
+     */
+    backParams(params){
+        cc.log(params);
+        this.p.push(params);
+        jsb.reflection.callStaticMethod("org/cocos2dx/javascript/AppActivity", "unzipFile","(Ljava/lang/String;)V",params);
+        // jsb.reflection.callStaticMethod("org/cocos2dx/javascript/AppActivity", "jsToast","(Ljava/lang/String;)V","params:"+this.p.toString());
+        this.plDownload(this.needDownloads);
+    },
+
+    setUnzipPath(savePath){
+        cc.log(savePath);
+        cc.sys.localStorage.setItem("unzipPath",savePath);
+    },
 
     // unLock(itemName){
     //     cc.log("unlock==="+itemName);

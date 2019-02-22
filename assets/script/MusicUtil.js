@@ -58,12 +58,23 @@ cc.Class({
         this.audioSource = cc.url.raw('resources/audio/'+path);
     },
 
+    setLocalMainMusic(path){
+        var unzipPath = cc.sys.localStorage.getItem("unzipPath");
+        this.path = unzipPath+"/"+path+"/"+"bgm_easy.wav";
+    },
+
     playMain: function () {
         this.main = cc.audioEngine.playMusic(this.audioSource, false);
         // this.audioSource.play();
         return this.main;
     },
-    rewindMain: function () {
+
+    playLocalMain(){
+        this.main = cc.audioEngine.playMusic(this.path, false);
+        return this.main;
+    },
+
+    rewindMain() {
         this.playMain();
     },
     resumeMain: function(){
@@ -129,13 +140,17 @@ cc.Class({
                 this.playS();
                 break;
             case "main":
-                id = this.playMain();
+                // id = this.playMain();
+                id = this.playLocalMain();
                 break;
             case "success":
                 this.playSuccessSound();
                 break;
             case "fail":
                 this.playFailSound();
+                break;
+            case "animal":
+                this.playAnimalSound();
                 break;
         }
         return id;
@@ -164,6 +179,14 @@ cc.Class({
         cc.log("play fail");
         this.failId = cc.audioEngine.play(this.failAudioSource,false,1);
     }, 
+    
+    setAnimalPath(path){
+        this.animalPath = path;
+    },
+
+    playAnimalSound(){
+        this.animalId = cc.audioEngine.play(this.animalPath,false,1);
+    },
 
     onLoad(){
         //levelCtrl.js
@@ -173,8 +196,10 @@ cc.Class({
         //homeCtrl.js
         global.event.on("stopMain",this.stopMain.bind(this));
         //level.js
-        global.event.on("setMainMusic",this.setMainMusic.bind(this));
+        global.event.on("setMainMusic",this.setLocalMainMusic.bind(this));
         global.event.on("playTone",this.playTone.bind(this));
+        //successDialog.js
+        global.event.on("setAnimalPath",this.setAnimalPath.bind(this));
         // global.event.on("successSound",this.playSuccessSound.bind(this));
         // global.event.on("failSound",this.playFailSound.bind(this));
     },

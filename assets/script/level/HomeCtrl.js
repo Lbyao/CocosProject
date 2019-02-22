@@ -76,24 +76,29 @@ cc.Class({
         this.playBg();
         var goldCoin = cc.sys.localStorage.getItem("goldCoin");
         var love = cc.sys.localStorage.getItem("love");
-        var mode = cc.sys.localStorage.getItem("mode");
+        // var mode = cc.sys.localStorage.getItem("mode");
         var star = cc.sys.localStorage.getItem("star");
-        if(goldCoin===null){
+        if(goldCoin==null){
             cc.sys.localStorage.setItem("goldCoin",6666);
+        }else{
+            this.goldCoinLabel.string = "x"+cc.sys.localStorage.getItem("goldCoin");
         }
-        if(love === null){
+        if(love == null){
             cc.sys.localStorage.setItem("love",1000);
+        }else{
+            this.loveLabel.string = "x"+cc.sys.localStorage.getItem("love");
         }
-        if(star===null){
+        if(star==null){
             cc.sys.localStorage.setItem("star",0);
+        }else{
+            this.starLabel.string = "x"+cc.sys.localStorage.getItem("star");
         }
-        if(mode===null){
-            cc.sys.localStorage.setItem("mode",0);
-        }
-
-        this.starLabel.string = "x"+cc.sys.localStorage.getItem("star");
-        this.goldCoinLabel.string = "x"+cc.sys.localStorage.getItem("goldCoin");
-        this.loveLabel.string = "x"+cc.sys.localStorage.getItem("love");
+        // if(mode==null){
+        //     cc.sys.localStorage.setItem("mode",0);
+        // }else{
+        //     this.modeNode.spriteFrame = this.sprites[mode];
+        // }
+        this.updateMode();
     },
 
     updateCoinAndLove(){
@@ -101,28 +106,44 @@ cc.Class({
         this.loveLabel.string = "x"+cc.sys.localStorage.getItem("love");
     },
 
-    start () {
+    // start () {},
 
+    updateMode(){
+        var mode = cc.sys.localStorage.getItem("mode");
+        if(mode==null){
+            cc.sys.localStorage.setItem("mode",0);
+            this.modeNode.spriteFrame = this.sprites[0];
+        }else{
+            switch (mode) {
+                case "0":
+                    this.btNode.active = false;
+                    break;
+                case "1":
+                    this.openBluetooth();
+                    this.btNode.active = true;
+                    break;
+            }
+            this.modeNode.spriteFrame = this.sprites[mode];
+        }
+        
     },
 
     changeMode(){
         global.event.fire("btnClick");
-        var mode = cc.sys.localStorage.getItem("mode")
+        var mode = cc.sys.localStorage.getItem("mode");
         cc.log("mode:"+mode);
         switch(mode){
             case "0":
-                this.modeNode.spriteFrame = this.sprites[1];
+                // this.modeNode.spriteFrame = this.sprites[1];
                 cc.sys.localStorage.setItem("mode",1);
                 cc.log("mode:opentooth");
-                this.openBluetooth();
-                this.btNode.active = true;
                 break;
             case "1":
                 cc.sys.localStorage.setItem("mode",0);
-                this.modeNode.spriteFrame = this.sprites[0]
-                this.btNode.active = false;
+                // this.modeNode.spriteFrame = this.sprites[0]
                 break;
         }
+        this.updateMode();
     },
     /**
      * 打开蓝牙

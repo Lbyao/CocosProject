@@ -93,10 +93,10 @@ cc.Class({
 
     animalSound(){
         global.event.fire("btnClick");
-
-
-        // global.event.fire("setMainMusic","game_success.wav");
-        // global.event.fire("playTone","main");
+        var unzipPath = cc.sys.localStorage.getItem("unzipPath");
+        var path = unzipPath+"/"+this.itemName+"/"+"animal_voice.mp3"
+        global.event.fire("setAnimalPath",path);
+        global.event.fire("playTone","animal");
 
         global.event.fire("playTone","success");
     },
