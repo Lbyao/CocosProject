@@ -32,6 +32,10 @@ cc.Class({
             default:null,
             type:cc.Label
         },
+        cumulativeScoreLabel:{
+            default:null,
+            type:cc.Label
+        },
         musicNode:{
             default:null,
             type:cc.Node
@@ -51,7 +55,7 @@ cc.Class({
     playBg(){
         
         this.music.setMainMusic('main_bgm.mp3');
-        var id = this.music.playTone("main");
+        var id = this.music.playTone("bg");
         this.music.loop(id);
     },
 
@@ -64,16 +68,35 @@ cc.Class({
     },
 
     onLoad () {
-
+        this.getSavePath();
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
         //loginRewardDialog.js
         global.event.on("updateUI",this.updateCoinAndLove.bind(this));
-        
-        this.music = this.musicNode.getComponent("MusicUtil");
+
         //levelCtrl.js
         global.event.on("pauseBg",this.pauseBg.bind(this));
+    },
+
+    getSavePath(){
+        this.savePath = jsb.reflection.callStaticMethod("org/cocos2dx/javascript/AppActivity", "getSavePath","()Ljava/lang/String;");
+    },
+
+    updateCoinAndLove(){
+        this.goldCoinLabel.string = "x"+cc.sys.localStorage.getItem("goldCoin");
+        this.loveLabel.string = "x"+cc.sys.localStorage.getItem("love");
+    },
+
+    start () {
+        this.music = this.musicNode.getComponent("MusicUtil");
         this.playBg();
+        var CumulativeScore = cc.sys.localStorage.getItem("CumulativeScore");
+        if(CumulativeScore==null){
+            this.cumulativeScoreLabel.string = "累计得分0"
+        }else{
+            this.cumulativeScoreLabel.string = "累计得分"+CumulativeScore;
+        }
+
         var goldCoin = cc.sys.localStorage.getItem("goldCoin");
         var love = cc.sys.localStorage.getItem("love");
         // var mode = cc.sys.localStorage.getItem("mode");
@@ -100,13 +123,6 @@ cc.Class({
         // }
         this.updateMode();
     },
-
-    updateCoinAndLove(){
-        this.goldCoinLabel.string = "x"+cc.sys.localStorage.getItem("goldCoin");
-        this.loveLabel.string = "x"+cc.sys.localStorage.getItem("love");
-    },
-
-    // start () {},
 
     updateMode(){
         var mode = cc.sys.localStorage.getItem("mode");
@@ -171,9 +187,9 @@ cc.Class({
         
         this.names.push(btName);
         this.addresss.push(btAddress);
-        if(btName=="Lmr"){
-            this.address = btAddress;
-        }
+        // if(btName=="Lmr"){
+        //     this.address = btAddress;
+        // }
         // this.stringLabel.string = this.names.length;
         this.btdialogNode.getComponent('ListViewCtrl').destroyNode();
         this.btdialogNode.getComponent('ListViewCtrl').setBTList(this.names,this.addresss);
@@ -224,7 +240,7 @@ cc.Class({
         switch(event.keyCode) {
 
             case 6:
-                // cc.game.restart();
+                cc.game.restart();
                 // cc.game.end();
                 cc.log("点击返回按钮");
                 break;

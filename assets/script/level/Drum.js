@@ -53,33 +53,33 @@ cc.Class({
     onLoad() {
         var that = this;
         
-        this.bpNode.on(cc.Node.EventType.TOUCH_START, function () {
-            global.event.fire("click_drum", "B");
-            this.musicNode.getComponent("MusicUtil").playB();
-            this.fadeIn(this.bpNode);
-        }, this);
-        this.bpNode.on(cc.Node.EventType.TOUCH_END, function () {
-            this.fadeOut(this.bpNode);
-        }, this);
+        // this.bpNode.on(cc.Node.EventType.TOUCH_START, function () {
+        //     global.event.fire("click_drum", "B");
+        //     this.musicNode.getComponent("MusicUtil").playB();
+        //     this.fadeIn(this.bpNode);
+        // }, this);
+        // this.bpNode.on(cc.Node.EventType.TOUCH_END, function () {
+        //     this.fadeOut(this.bpNode);
+        // }, this);
 
-        this.spNode.on(cc.Node.EventType.TOUCH_START, function () {
-            global.event.fire("click_drum", "S");
-            this.musicNode.getComponent("MusicUtil").playS();
-            this.fadeIn(this.spNode);
-        }, this);
-        this.spNode.on(cc.Node.EventType.TOUCH_END, function () {
-            this.fadeOut(this.spNode);
-        }, this);
+        // this.spNode.on(cc.Node.EventType.TOUCH_START, function () {
+        //     global.event.fire("click_drum", "S");
+        //     this.musicNode.getComponent("MusicUtil").playS();
+        //     this.fadeIn(this.spNode);
+        // }, this);
+        // this.spNode.on(cc.Node.EventType.TOUCH_END, function () {
+        //     this.fadeOut(this.spNode);
+        // }, this);
 
-        this.tpNode.on(cc.Node.EventType.TOUCH_START, function () {
-            global.event.fire("click_drum", "T");
-            this.musicNode.getComponent("MusicUtil").playT();
-            this.fadeIn(this.tpNode);
-        }, this);
+        // this.tpNode.on(cc.Node.EventType.TOUCH_START, function () {
+        //     global.event.fire("click_drum", "T");
+        //     this.musicNode.getComponent("MusicUtil").playT();
+        //     this.fadeIn(this.tpNode);
+        // }, this);
 
-        this.tpNode.on(cc.Node.EventType.TOUCH_END, function () {
-            this.fadeOut(this.tpNode)
-        }, this);
+        // this.tpNode.on(cc.Node.EventType.TOUCH_END, function () {
+        //     this.fadeOut(this.tpNode)
+        // }, this);
         // BallJson.js
         global.event.on("ball_in", this.ballIn.bind(this));
         // GameWorld.js
@@ -162,7 +162,34 @@ cc.Class({
     },
 
     start() {
+        var that = this;
+        this.bpNode.on(cc.Node.EventType.TOUCH_START, function () {
+            global.event.fire("click_drum", "B");
+            this.musicNode.getComponent("MusicUtil").playB();
+            this.fadeIn(this.bpNode);
+        }, this);
+        this.bpNode.on(cc.Node.EventType.TOUCH_END, function () {
+            this.fadeOut(this.bpNode);
+        }, this);
 
+        this.spNode.on(cc.Node.EventType.TOUCH_START, function () {
+            global.event.fire("click_drum", "S");
+            this.musicNode.getComponent("MusicUtil").playS();
+            this.fadeIn(this.spNode);
+        }, this);
+        this.spNode.on(cc.Node.EventType.TOUCH_END, function () {
+            this.fadeOut(this.spNode);
+        }, this);
+
+        this.tpNode.on(cc.Node.EventType.TOUCH_START, function () {
+            global.event.fire("click_drum", "T");
+            this.musicNode.getComponent("MusicUtil").playT();
+            this.fadeIn(this.tpNode);
+        }, this);
+
+        this.tpNode.on(cc.Node.EventType.TOUCH_END, function () {
+            this.fadeOut(this.tpNode)
+        }, this);
     },
 
     // update (dt) {},

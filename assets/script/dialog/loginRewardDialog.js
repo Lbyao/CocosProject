@@ -33,7 +33,6 @@ cc.Class({
 
     onLoad () {
         this.param = "";
-        this.CheckInDisplay();
     },
 
     getReward(){
@@ -81,12 +80,13 @@ cc.Class({
         global.event.fire("updateUI");
     },
 
-    // start () {},
+    start () {
+        this.CheckInDisplay();
+    },
 
     CheckInDisplay(){
         cc.log(",date:");
         var mydate = new Date();
-        jsb.reflection.callStaticMethod("org/cocos2dx/javascript/AppActivity", "jsToast","(Ljava/lang/String;)V","date");
         var checkin = cc.sys.localStorage.getItem("checkin");
         if(checkin!=null){
             this.param = JSON.parse(checkin);
@@ -104,7 +104,7 @@ cc.Class({
                 this.loginRewardDialog.active = true;
                 
             }else{
-                jsb.reflection.callStaticMethod("org/cocos2dx/javascript/AppActivity", "jsToast","(Ljava/lang/String;)V","签到过了");
+                jsb.reflection.callStaticMethod("org/cocos2dx/javascript/AppActivity", "jsToast","(Ljava/lang/String;)V","已签到");
             }
         }else{
             var CheckInParam = {
@@ -115,6 +115,7 @@ cc.Class({
             CheckInParam.isCheck = this.getyyyyMMdd(mydate);
             this.param = CheckInParam;
             this.loginRewardDialog.active = true;
+            jsb.reflection.callStaticMethod("org/cocos2dx/javascript/AppActivity", "jsToast","(Ljava/lang/String;)V","第一次签到");
             // cc.sys.localStorage.setItem("checkin",JSON.stringify(CheckInParam));
             // cc.log(CheckInParam.isCheck+"+"+CheckInParam.days[0].day+",date:"+mydate);
         }

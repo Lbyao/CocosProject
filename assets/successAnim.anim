@@ -9,16 +9,6 @@
   "wrapMode": 1,
   "curveData": {
     "props": {
-      "rotation": [
-        {
-          "frame": 0,
-          "value": 360
-        },
-        {
-          "frame": 1,
-          "value": 0
-        }
-      ],
       "opacity": [
         {
           "frame": 0,
@@ -45,6 +35,16 @@
             "x": 1,
             "y": 1
           }
+        }
+      ],
+      "angle": [
+        {
+          "frame": 0,
+          "value": -360
+        },
+        {
+          "frame": 1,
+          "value": 0
         }
       ]
     },

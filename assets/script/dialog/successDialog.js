@@ -36,6 +36,14 @@ cc.Class({
             default:[],
             type:cc.SpriteFrame
         },
+        bgSprites:{
+            default:null,
+            type:cc.Sprite
+        },
+        animalSprites:{
+            default:[],
+            type:cc.SpriteFrame
+        }
     },
 
     setScore(score,afterScore,itemName){
@@ -47,22 +55,8 @@ cc.Class({
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
-        this.scoreLabel.string = this.score;
-        this.afterScoreLabel.string = this.afterScore;
-        cc.log(this.itemName);
-        var result = cc.sys.localStorage.getItem("level"+this.itemName);
-        cc.log(result);
-        var levelInfo = JSON.parse(result);
-
-        if(levelInfo.simaple!=null){
-            this.leftStart.spriteFrame = this.sprites[0];
-        }
-        if(levelInfo.common!=null){
-            this.centerStart.spriteFrame = this.sprites[1];
-        }
-        if(levelInfo.difficulty!=null){
-            this.rightStart.spriteFrame = this.sprites[2];
-        }
+        // jsb.reflection.callStaticMethod("org/cocos2dx/javascript/AppActivity", "jsToast","(Ljava/lang/String;)V", "successDialog:"+this.getAnimalNum(this.itemName));
+        
 
         // switch(levelInfo.score){
         //     case 5:
@@ -75,6 +69,17 @@ cc.Class({
         //         rightStart.getComponent(cc.Sprite).spriteFrame = this.sprites[2];
         //         break;
         // }
+    },
+    /**
+     * 获取关卡对应的号码
+     * @param {string} itemName 关卡id
+     */
+    getAnimalNum(itemName){
+        var first = itemName.substring(0,1);
+        var last = itemName.substring(1,2);
+        var num1 = new Number(first);
+        var num2 = new Number(last);
+        return num1*4+num2;
     },
 
     nextLevel(){
@@ -98,11 +103,27 @@ cc.Class({
         global.event.fire("setAnimalPath",path);
         global.event.fire("playTone","animal");
 
-        global.event.fire("playTone","success");
+        // global.event.fire("playTone","success");
     },
 
     start () {
+        this.bgSprites.spriteFrame = this.animalSprites[this.getAnimalNum(this.itemName)]
 
+        this.scoreLabel.string = this.score;
+        this.afterScoreLabel.string = this.afterScore;
+        cc.log(this.itemName);
+        var result = cc.sys.localStorage.getItem("level"+this.itemName);
+        cc.log(result);
+        var levelInfo = JSON.parse(result);
+        if(levelInfo.simaple!=null){
+            this.leftStart.spriteFrame = this.sprites[0];
+        }
+        if(levelInfo.common!=null){
+            this.centerStart.spriteFrame = this.sprites[1];
+        }
+        if(levelInfo.difficulty!=null){
+            this.rightStart.spriteFrame = this.sprites[2];
+        }
     },
 
     // update (dt) {},

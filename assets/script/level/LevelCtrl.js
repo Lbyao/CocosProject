@@ -37,31 +37,17 @@ cc.Class({
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
-        this.levels = ["00","01","02","03","10","11","12","13","20","21","22","23","30","31","32","33","40","41","42","43"];
+        
+    },
+
+    start () {
+        this.unLockLevels();
         // global.event.on("unlock",this.unLock.bind(this));
-        this.needDownloads = ["00","01","02","03","10","11","12","13","20","21","22","23","30","31","32","33","40","41","42","43"];
-        // var spriteFrame = new cc.SpriteFrame('/storage/emulated/0/Huawei/MagazineUnlock/magazine-unlock-01-2.3.1253-_46A529DBACA459632333408E1C590DA2.jpg');
-        // this.testSprit.spriteFrame = spriteFrame;
-        this.index =0;
-        var downloadLevels = cc.sys.localStorage.getItem("DownloadLevels");
-        if(downloadLevels==null){
-            this.toastToJava("下载null");
-            this.plDownload(this.needDownloads);
-        }else{
-            this.toastToJava("下载");
-            //未测试
-            downloadLevels = JSON.parse(downloadLevels);
-            cc.log("onLoad downloadLevels:"+downloadLevels);
-            for (let index = 0; index < downloadLevels.length; index++) {
-                const element = downloadLevels[index];
-                //获取元素的位置
-                var idx = this.needDownloads.indexOf(element);
-                //删除指定位置的长度为1 的值
-                this.needDownloads.splice(idx,1);
-            }
-            cc.log("onLoad needDownloads:"+this.needDownloads);
-            this.plDownload(this.needDownloads);
-        }
+        this.downloadLevels();
+    },
+
+    unLockLevels(){
+        this.levels = ["00","01","02","03","10","11","12","13","20","21","22","23","30","31","32","33","40","41","42","43"];
 
         var that = this;
         for(var i=0;i<20;i++){
@@ -125,6 +111,40 @@ cc.Class({
         }
     },
 
+    downloadLevels(){
+        this.needDownloads = ["00","01","02","03","10","11","12","13","20","21","22","23","30","31","32","33","40","41","42","43"];
+        // var spriteFrame = new cc.SpriteFrame('/storage/emulated/0/Huawei/MagazineUnlock/magazine-unlock-01-2.3.1253-_46A529DBACA459632333408E1C590DA2.jpg');
+        // this.testSprit.spriteFrame = spriteFrame;
+        this.index =0;
+        var downloadLevels = cc.sys.localStorage.getItem("DownloadLevels");
+        if(downloadLevels==null){
+            this.toastToJava("下载null");
+            this.plDownload(this.needDownloads);
+        }else{
+            this.toastToJava("下载");
+            //未测试
+            downloadLevels = JSON.parse(downloadLevels);
+            cc.log("onLoad downloadLevels:"+downloadLevels);
+            for (let index = 0; index < downloadLevels.length; index++) {
+                const element = downloadLevels[index];
+                //获取元素的位置
+                var idx = this.needDownloads.indexOf(element);
+                //删除指定位置的长度为1 的值
+                this.needDownloads.splice(idx,1);
+            }
+            cc.log("onLoad needDownloads:"+this.needDownloads);
+            this.plDownload(this.needDownloads);
+        }
+    },
+
+    /**
+     * 检测关卡文件是否完整
+     * @param {string} id 关卡id
+     */
+    checkResourceIsComplete(id){
+        return jsb.reflection.callStaticMethod("org/cocos2dx/javascript/AppActivity", "checkResourceIsComplete","(Ljava/lang/String;)Z",id);
+    },
+
     getUpId(nowId){
         var levelId = "";
         var s = nowId.substring(0,1);
@@ -146,7 +166,17 @@ cc.Class({
             var url = "http://www.dadpat.com/app/rhythm/"+fileName;
             this.downFile2Local(url,fileName,this.backParams.bind(this));
         }else{
-            cc.director.loadScene("game");
+            if(this.checkResourceIsComplete(itemid)){
+                // this.toastToJava("完整");
+                //homeCtrl.js
+                global.event.fire("pauseBg");
+                cc.director.loadScene("game");
+            }else{
+                var fileName = itemid+".zip";
+                var url = "http://www.dadpat.com/app/rhythm/"+fileName;
+                this.downFile2Local(url,fileName,this.backParams.bind(this));
+            }
+            
         }
     },
 
@@ -180,8 +210,6 @@ cc.Class({
         }
         return id;
     },
-
-    // start () {},
 
     downFile2Local:function(url, fileName, callback){
         // data/data/org.cocos2d.TestProject/file/fileName jsb.fileUtils.getWritablePath() + fileName
@@ -222,6 +250,8 @@ cc.Class({
             // cc.log("预期总大小:"+totalBytesExpected);
             // cc.log("下载进度："+totalBytesReceived*1.0/totalBytesExpected);
             // that.progressNode.getComponent(cc.ProgressBar).progress = totalBytesReceived*1.0/totalBytesExpected;
+            
+            jsb.reflection.callStaticMethod("org/cocos2dx/javascript/AppActivity", "jsToast","(Ljava/lang/String;)V","关卡下载中...");
         });
 
         this.downloader.setOnTaskError(function(){  

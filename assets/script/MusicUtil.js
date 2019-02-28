@@ -61,6 +61,8 @@ cc.Class({
     setLocalMainMusic(path){
         var unzipPath = cc.sys.localStorage.getItem("unzipPath");
         this.path = unzipPath+"/"+path+"/"+"bgm_easy.wav";
+        cc.log("setLocalMainMusic:"+this.path);
+        // jsb.reflection.callStaticMethod("org/cocos2dx/javascript/AppActivity", "jsToast","(Ljava/lang/String;)V", "setLocalMainMusic:"+this.path);
     },
 
     playMain: function () {
@@ -152,6 +154,9 @@ cc.Class({
             case "animal":
                 this.playAnimalSound();
                 break;
+            case "bg":
+                id = this.playMain();
+                break;
         }
         return id;
     },
@@ -185,7 +190,7 @@ cc.Class({
     },
 
     playAnimalSound(){
-        this.animalId = cc.audioEngine.play(this.animalPath,false,1);
+        this.animalId = cc.audioEngine.playMusic(this.animalPath,false);
     },
 
     onLoad(){

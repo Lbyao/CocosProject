@@ -53,6 +53,14 @@ cc.Class({
             default:null,
             type:cc.Node
         },
+        bgSprite:{
+            default:null,
+            type: cc.Sprite
+        },
+        bgSpriteFrames:{
+            default:[],
+            type:cc.SpriteFrame
+        }
     },
 
     backHome(){
@@ -138,6 +146,8 @@ cc.Class({
 
     startMusic(){
         //musicUtil.js
+        cc.log("startMusic:"+this.name);
+        jsb.reflection.callStaticMethod("org/cocos2dx/javascript/AppActivity", "jsToast","(Ljava/lang/String;)V", "startMusic:"+this.name);
         global.event.fire("setMainMusic", this.name);
         global.event.fire("playTone", "main");
 
@@ -171,26 +181,42 @@ cc.Class({
     },
 
     nextMusic(){
-
+        this.scoreLabel.string = 0;
         cc.log("nextMusic");
 
-        this.name = 'txxm';
-        // this.score = score;
-        var isStart = true;
-        this.path = "json_easy_"+this.name;
-
-        //监听播放音乐
-        global.event.on("loadSuccess",this.startMusic.bind(this));
+        // this.name = 'txxm';
+        // // this.score = score;
+        // var isStart = true;
+        // this.path = "json_easy_"+this.name;
         
+        this.itemName = this.getNextName(this.itemName);
+        jsb.reflection.callStaticMethod("org/cocos2dx/javascript/AppActivity", "jsToast","(Ljava/lang/String;)V", "nextMusic:"+this.itemName);
+        this.name = this.itemName;
+        this.levelNumLabel.string = "关卡"+this.getLevelNum(this.itemName);
+        var unzipPath = cc.sys.localStorage.getItem("unzipPath");
+        this.path = this.getDifficulty(this.itemName,unzipPath,this.score);
+
+        //监听播放音乐 guide.js
+        global.event.on("loadSuccess",this.startMusic.bind(this));
+            
         // global.event.fire("resetBallList");
         // global.event.fire("loadJson",this.path);
         this.guideNode.getComponent("guide").resetBallList();
         this.guideNode.getComponent("guide").loadJson(this.path);
         // cc.Codec.unzip()
+        this.bgSprite.spriteFrame = this.bgSpriteFrames[this.getBgNum(this.itemName)];
     },
 
-    getNextName(){
-
+    getNextName(name){
+        var first = name.substring(0,1);
+        var last = name.substring(1,2);
+        if(last==3){
+            first = first-0+1;
+            last = 0;
+        }else if(last<3){
+            last = last-0+1;
+        }
+        return first+""+last;        
     },
 
     onLoad () {
@@ -199,14 +225,7 @@ cc.Class({
         this.keyDown = 0;
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
-        
-        this.itemName = cc.sys.localStorage.getItem("itemName");
-        this.levelNumLabel.string = "关卡"+this.getLevelNum(this.itemName);
-        var goldCoin = cc.sys.localStorage.getItem("goldCoin");
-        var love = cc.sys.localStorage.getItem("love");
-        this.coinLabel.string = "x"+goldCoin;
-        this.loveLabel.string = "x"+love;
-        this.scoreLabel.string = 0;
+
         //BallJson.js
         global.event.on("addSorce",this.addSorce.bind(this));
         //BallJson.js
@@ -222,6 +241,26 @@ cc.Class({
         //successDialog.js
         global.event.on("nextMusic",this.nextMusic.bind(this));
         global.event.on("resetGame",this.resetGame.bind(this));
+        
+    },
+
+    start () {
+        var CumulativeScore = cc.sys.localStorage.getItem("CumulativeScore");
+        if(CumulativeScore==null){
+            this.sumScoreLabel.string = "累计得分0"
+        }else{
+            this.sumScoreLabel.string = "累计得分"+CumulativeScore;
+        }
+        
+        this.itemName = cc.sys.localStorage.getItem("itemName");
+        this.levelNumLabel.string = "关卡"+this.getLevelNum(this.itemName);
+        var goldCoin = cc.sys.localStorage.getItem("goldCoin");
+        var love = cc.sys.localStorage.getItem("love");
+        this.coinLabel.string = "x"+goldCoin;
+        this.loveLabel.string = "x"+love;
+        this.scoreLabel.string = 0;
+
+        this.bgSprite.spriteFrame = this.bgSpriteFrames[this.getBgNum(this.itemName)];
         //监听应用是否在后台
         cc.game.on(cc.game.EVENT_HIDE, event=>{
             return cc.log('emit cc.game.EVENT_HIDE!');
@@ -233,6 +272,18 @@ cc.Class({
             }
             return cc.log('emit cc.game.EVENT_SHOW!');
         });
+    },
+
+    /**
+     * 获取关卡对应的背景号码
+     * @param {string} itemName 关卡id
+     */
+    getBgNum(itemName){
+        var first = itemName.substring(0,1);
+        // var last = itemName.substring(1,2);
+        var num1 = new Number(first);
+        // var num2 = new Number(last);
+        return num1;
     },
 
     getLove(){
@@ -258,7 +309,7 @@ cc.Class({
         }else{
             this.isStart = false;
             // global.event.fire("btnClick");
-            global.event.fire("playTone","fail");
+            // global.event.fire("playTone","fail");
             // this.failNode.active = true;
             // this.pauseMB();
         }
@@ -267,20 +318,29 @@ cc.Class({
 
     ballSuccessed(){
         // global.event.fire("btnClick");
-        global.event.fire("playTone","success");
+        
         this.isStart = false;
         cc.log("ballSuccessed");
         var timeCallback = function (dt) {
+            global.event.fire("playTone","success");
             cc.log("time: " + dt);
             var mscore = this.scoreLabel.string;
-            var afterScore = 0;
-            if(cc.sys.localStorage.getItem(this.itemName)===null){
-                cc.sys.localStorage.setItem(this.itemName,mscore);
+            var CumulativeScore = cc.sys.localStorage.getItem("CumulativeScore");
+            if(CumulativeScore==null){
+                cc.sys.localStorage.setItem("CumulativeScore",mscore);
             }else{
-                var s = cc.sys.localStorage.getItem(this.itemName);
+                CumulativeScore = (CumulativeScore-0)+(mscore-0);
+                cc.sys.localStorage.setItem("CumulativeScore",CumulativeScore);
+            }
+
+            var afterScore = 0;
+            if(cc.sys.localStorage.getItem("afterScore"+this.itemName)===null){
+                cc.sys.localStorage.setItem(("afterScore"+this.itemName),mscore);
+            }else{
+                var s = cc.sys.localStorage.getItem("afterScore"+this.itemName);
                 afterScore = s;
                 if(s<mscore){
-                    cc.sys.localStorage.setItem(this.itemName,mscore);
+                    cc.sys.localStorage.setItem(("afterScore"+this.itemName),mscore);
                 }
             }
 
@@ -331,14 +391,14 @@ cc.Class({
             this.successNode.active = true;
             // this.pauseMB();
         }
-        this.scheduleOnce(timeCallback, 2);
+        this.scheduleOnce(timeCallback, 3);
         
         // global.event.fire("unlock",this.itemName);
     },
 
     getLevelNum(itemName){
-        var first = itemName.substring(0);
-        var last = itemName.substring(1);
+        var first = itemName.substring(0,1);
+        var last = itemName.substring(1,2);
         first = first-0+1;
         last = last-0+1;
         return first+"-"+last;
@@ -359,8 +419,6 @@ cc.Class({
         }
         return path;
     },
-
-    // start () {},
 
     // update (dt) {},
     onKeyDown: function (event) {

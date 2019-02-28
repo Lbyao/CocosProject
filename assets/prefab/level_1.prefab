@@ -2019,7 +2019,7 @@
         "__id__": 58
       }
     ],
-    "_active": true,
+    "_active": false,
     "_level": 2,
     "_components": [
       {
@@ -2305,7 +2305,7 @@
         "__id__": 66
       }
     ],
-    "_active": true,
+    "_active": false,
     "_level": 2,
     "_components": [
       {
@@ -7416,6 +7416,71 @@
         "__uuid__": "fd24bae1-7cc7-4355-86c3-5e8025d4049f"
       }
     ],
+    "bgSprites": {
+      "__id__": 186
+    },
+    "animalSprites": [
+      {
+        "__uuid__": "8a665ab5-7d7f-4168-abee-e6d874cd13be"
+      },
+      {
+        "__uuid__": "f5ad6299-ae04-41d8-b817-b6c00fd45c4f"
+      },
+      {
+        "__uuid__": "084775c7-439f-4d57-bba3-dd8c3bf0b315"
+      },
+      {
+        "__uuid__": "097f0936-959f-43bf-8a7c-0fa90e04ab7b"
+      },
+      {
+        "__uuid__": "3e8d5493-a710-4241-bc5d-a98d91c7ab95"
+      },
+      {
+        "__uuid__": "1ed4a3a7-a90a-40af-86f5-65f917dd48e3"
+      },
+      {
+        "__uuid__": "80375ee2-2560-42fc-beeb-2ebf5b8f5d12"
+      },
+      {
+        "__uuid__": "73ae4015-4605-4099-a023-32c899e1dd5a"
+      },
+      {
+        "__uuid__": "4669e10e-e8ee-415f-8153-bea0ecc13829"
+      },
+      {
+        "__uuid__": "c3a62579-a975-4ae0-b4c5-a1c0577b1dbe"
+      },
+      {
+        "__uuid__": "59e3bb43-23f9-4a31-8554-411b8b6696e2"
+      },
+      {
+        "__uuid__": "f7bc23d3-6f2e-43df-9666-44d56945b466"
+      },
+      {
+        "__uuid__": "7534073c-db5f-4fad-a297-c908586a3cda"
+      },
+      {
+        "__uuid__": "f97d6efd-e8f7-4c2e-8b08-5fd76fdab08e"
+      },
+      {
+        "__uuid__": "2f52600d-2275-4127-bb94-603dc9253c00"
+      },
+      {
+        "__uuid__": "84e0ef29-a37a-4400-9437-ea1768746092"
+      },
+      {
+        "__uuid__": "0ce7d25a-556a-475b-ad9c-f71c0cf130db"
+      },
+      {
+        "__uuid__": "8764672b-8e28-4c4a-b0df-35ffcf789f9e"
+      },
+      {
+        "__uuid__": "3b3b3168-7e2b-4f65-ab9c-9d74067825ef"
+      },
+      {
+        "__uuid__": "ac871dd4-c71d-4dd2-920e-4504433d7170"
+      }
+    ],
     "_id": ""
   },
   {
@@ -7496,6 +7561,26 @@
     "successNode": {
       "__id__": 170
     },
+    "bgSprite": {
+      "__id__": 3
+    },
+    "bgSpriteFrames": [
+      {
+        "__uuid__": "df657f9b-9834-45ef-bc58-920d05b6aa92"
+      },
+      {
+        "__uuid__": "867b801e-ae66-4cd9-9e9c-c4b51b7ebfee"
+      },
+      {
+        "__uuid__": "efc9b206-2c52-4364-a6a4-2921dd5aa39f"
+      },
+      {
+        "__uuid__": "0e33435a-b071-4875-86ac-06f2b4e73b3b"
+      },
+      {
+        "__uuid__": "68ded875-ab20-4b21-ad64-f6b3402a3b55"
+      }
+    ],
     "_id": ""
   },
   {

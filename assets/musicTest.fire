@@ -41,8 +41,8 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 0.8354166666666666,
-      "y": 0.8354166666666666,
+      "x": 0.7541666666666667,
+      "y": 0.7541666666666667,
       "z": 1
     },
     "_quat": {
@@ -2047,7 +2047,7 @@
       "width": 960,
       "height": 640
     },
-    "_fitWidth": false,
+    "_fitWidth": true,
     "_fitHeight": true,
     "_id": "edwoHz1IZNFYHhYc8DqNIR"
   }

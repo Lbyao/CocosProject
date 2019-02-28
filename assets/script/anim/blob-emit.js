@@ -22,6 +22,7 @@ cc.Class({
 
     // use this for initialization
     onLoad: function () {
+        
         let physicsManager = cc.director.getPhysicsManager();
         physicsManager.enabled = true;
         // physicsManager.enabledDrawBoundingBox = true;
@@ -31,14 +32,45 @@ cc.Class({
         //     cc.PhysicsManager.DrawBits.e_shapeBit
         //     ;
         
-       
+        this.levels = ["00","01","02","03","10","11","12","13","20","21","22","23","30","31","32","33","40","41","42","43"];
         // cc.PhysicsCollider.getAABB();
         // var colliderList = cc.director.getPhysicsManager().testAABB(cc.Rect());
-        this.node.on(cc.Node.EventType.TOUCH_START, this.onTouchBegan, this);
+        // this.node.on(cc.Node.EventType.TOUCH_START, this.onTouchBegan, this);
+
+        var position = cc.v2(1920,1080);
+        var that = this;
+        cc.log(position.x+",y:"+position.y);
+        for (let index = 0; index < 20; index++) {
+            (function(e) {
+                setTimeout(function() {
+                    var result = cc.sys.localStorage.getItem("level"+that.levels[e]);
+                    cc.log("lock--"+result);
+                    if(result!=null){
+                        var node = cc.instantiate(that.blob);
+                        var blob = node.getComponent(Blob);
+                        blob.init(that.levels[e]);
+                        blob.emitTo(position);
+                
+                        node.active = true;
+                        node.parent = cc.director.getScene();
+                        cc.log("position:"+e)
+                    }
+                    // if(position.x>1920){
+                    //     cc.log("x")
+                    //     position.x = 0;
+                    //     position.y= position.y+e*250;
+                    // }else{
+                    //     cc.log("y")
+                    //     position.x = position.x+e*250;
+                    // }
+                }, e*2000);
+            })(index); 
+        }
     },
 
     onTouchBegan: function (event) {
         var touchLoc = event.touch.getLocation();
+        cc.log(touchLoc.x+":"+touchLoc.y);
         // debugger;
         var node = cc.instantiate(this.blob);
         var blob = node.getComponent(Blob);

@@ -11,7 +11,7 @@
     "paths": {
       "dialog_game_card_fail": {
         "props": {
-          "rotation": []
+          "angle": []
         }
       },
       "dialog_game_card_start_again": {
@@ -44,16 +44,6 @@
       }
     },
     "props": {
-      "rotation": [
-        {
-          "frame": 0,
-          "value": 360
-        },
-        {
-          "frame": 1,
-          "value": 0
-        }
-      ],
       "opacity": [
         {
           "frame": 0,
@@ -80,6 +70,16 @@
             "x": 1,
             "y": 1
           }
+        }
+      ],
+      "angle": [
+        {
+          "frame": 0,
+          "value": -360
+        },
+        {
+          "frame": 1,
+          "value": 0
         }
       ]
     }

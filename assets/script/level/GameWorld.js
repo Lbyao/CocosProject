@@ -29,8 +29,16 @@ cc.Class({
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
-        cc.log("name:"+Global.MusicName);
+        // cc.log("name:"+Global.MusicName);
+        //BallJson.js
+        global.event.on("ball_grade",this.showGrade.bind(this));
+        // game_level.js
+        global.event.on("start_game",this.startGame.bind(this));      
+        //connectFailDialog.js
+        global.event.on("connect",this.connectDrum.bind(this));  
+    },
 
+    start () {
         var mode = cc.sys.localStorage.getItem("mode");
         this.level = cc.instantiate(this.levelPrefads[0]);
             this.level.parent = this.node;
@@ -39,12 +47,6 @@ cc.Class({
         }else{
             this.connectDrum();
         }
-        //BallJson.js
-        global.event.on("ball_grade",this.showGrade.bind(this));
-        // game_level.js
-        global.event.on("start_game",this.startGame.bind(this));      
-        //connectFailDialog.js
-        global.event.on("connect",this.connectDrum.bind(this));  
     },
     showGameLevel() {
         this.gameLevel = cc.instantiate(this.gameLevelPrefab);
@@ -79,7 +81,6 @@ cc.Class({
         grade.runAction(scaleTo);
     },
 
-    // start () {},
     /**
      * 连接鼓
      */

@@ -46,13 +46,7 @@ cc.Class({
     //    this.play();
     //    console.log("in newBall"+ballInfo)
     //    this.newBall(ballInfo,speed);
-        //Level.js
-        global.event.on("loadJson",this.loadJson.bind(this));
-        global.event.on("startGuideGame",this.startGame.bind(this));
-        global.event.on("resetBallList",this.resetBallList.bind(this));
-        //balljson.js
-        global.event.on("GuideBallOver",this.ballOver.bind(this));
-        this.ballNodeList = [];
+        
     },
 
     startGame(score){
@@ -80,7 +74,7 @@ cc.Class({
                     console.log(err);
                     return;
                 }
-                jsb.reflection.callStaticMethod("org/cocos2dx/javascript/AppActivity", "jsToast","(Ljava/lang/String;)V",JSON.stringify(jsonAssest));
+                // jsb.reflection.callStaticMethod("org/cocos2dx/javascript/AppActivity", "jsToast","(Ljava/lang/String;)V",JSON.stringify(jsonAssest));
                 that.loadSuccess();
                 // that.startGame(music,score);
                 that.success = true;
@@ -224,7 +218,13 @@ cc.Class({
     },
 
     start () {
-
+        //Level.js
+        global.event.on("loadJson",this.loadJson.bind(this));
+        global.event.on("startGuideGame",this.startGame.bind(this));
+        global.event.on("resetBallList",this.resetBallList.bind(this));
+        //balljson.js
+        global.event.on("GuideBallOver",this.ballOver.bind(this));
+        this.ballNodeList = [];
     },
 
     // update (dt) {},

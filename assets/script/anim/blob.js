@@ -6,6 +6,7 @@ cc.Class({
 
     properties: {
         target: cc.Node,
+        spriteAtlas:cc.SpriteAtlas,
         particleNumber: 12,
         particleRadius: 30,
         sphereSize: 12
@@ -14,20 +15,38 @@ cc.Class({
     onDeviceMotionEvent (event) {
         // cc.log(event);
         // debugger
-        cc.log(event.acc.x + "-----------" + event.acc.y+"----------------"+event.acc.z);
+        cc.log("event name:", event.type, " acc x:", event.acc.x, " acc y:", event.acc.y, " acc z:", event.acc.z);
+        // cc.log(event.acc.x + "-----------" + event.acc.y+"----------------"+event.acc.z);
     },
 
     onDestroy () {
-        cc.systemEvent.off(cc.SystemEvent.EventType.DEVICEMOTION, this.onDeviceMotionEvent, this.target);
+        cc.systemEvent.off(cc.SystemEvent.EventType.DEVICEMOTION, this.onDeviceMotionEvent, this);
+    },
+
+    onLoad(){
+        //开启重力感应  
+        // jsb.device.setMotionEnabled(true);
+        cc.systemEvent.setAccelerometerEnabled(true);
+        cc.systemEvent.setAccelerometerInterval(2);
+        //加速度监听
+        cc.systemEvent.on(cc.SystemEvent.EventType.DEVICEMOTION, this.onDeviceMotionEvent, this);
+    },
+
+    touchAnimal(event){
+        cc.log("click animal:"+that.particleRadius); 
+        
     },
 
     // use this for initialization
-    init: function () {
-
+    init: function (index) {
+        this.particleRadius = index;
+        this.target.getComponent(cc.Sprite).spriteFrame = this.spriteAtlas.getSpriteFrame("img_sticker_"+index);
+        var that = this;
+        this.target.on('touchend',this.touchAnimal.bind(this));
         //开启重力感应  
         cc.systemEvent.setAccelerometerEnabled(true);
         //加速度监听
-        cc.systemEvent.on(cc.SystemEvent.EventType.DEVICEMOTION, this.onDeviceMotionEvent, this.target);
+        cc.systemEvent.on(cc.SystemEvent.EventType.DEVICEMOTION, this.onDeviceMotionEvent, this);
 
         //绘画
         this.ctx = this.getComponent(cc.Graphics);
@@ -38,50 +57,50 @@ cc.Class({
         this.ctx.strokeColor = cc.color({r: 73, g: 80, b: 105, a: 0});
         this.ctx.fillColor = cc.color({r: 255, g: 222, b: 89, a: 0});
 
-        let x = this.node.x;
-        let y = this.node.y;
+        // let x = this.node.x;
+        // let y = this.node.y;
 
-        let particleNumber = this.particleNumber;
-        let particleRadius = this.particleRadius;
+        // let particleNumber = this.particleNumber;
+        // let particleRadius = this.particleRadius;
         let sphereSize = this.sphereSize;
 
-        let particleAngle = (2*Math.PI)/particleNumber;
-        let particleDistance = Math.sin(particleAngle) * particleRadius * Math.sin((Math.PI - particleAngle)/2);
+        // let particleAngle = (2*Math.PI)/particleNumber;
+        // let particleDistance = Math.sin(particleAngle) * particleRadius * Math.sin((Math.PI - particleAngle)/2);
 //      保存创建的图片的数组
         let spheres = [];
         spheres.push( this._createSphere(0, 0, sphereSize, this.node) );
 
-        for (let i=0; i<particleNumber; i++) {
-            let angle = particleAngle*i;
-            let posX = particleRadius * Math.cos(angle);
-            let posY = particleRadius * Math.sin(angle);
-            let sphere = this._createSphere(posX, posY, sphereSize);
-            spheres.push( sphere );
+        // for (let i=0; i<particleNumber; i++) {
+        //     let angle = particleAngle*i;
+        //     let posX = particleRadius * Math.cos(angle);
+        //     let posY = particleRadius * Math.sin(angle);
+        //     let sphere = this._createSphere(posX, posY, sphereSize);
+        //     spheres.push( sphere );
             
-            let joint = sphere.node.addComponent(cc.DistanceJoint);
-            joint.connectedBody = spheres[0];
-            joint.distance = particleRadius;
-            joint.dampingRatio = 0.5;
-            joint.frequency = 4;
+        //     let joint = sphere.node.addComponent(cc.DistanceJoint);
+        //     joint.connectedBody = spheres[0];
+        //     joint.distance = particleRadius;
+        //     joint.dampingRatio = 0.5;
+        //     joint.frequency = 4;
 
-            if (i > 0) {
-                joint = sphere.node.addComponent(cc.DistanceJoint);
-                joint.connectedBody = spheres[spheres.length - 2];
-                joint.distance = particleDistance;
-                joint.dampingRatio = 1;
-                joint.frequency = 0;
-            }
+        //     if (i > 0) {
+        //         joint = sphere.node.addComponent(cc.DistanceJoint);
+        //         joint.connectedBody = spheres[spheres.length - 2];
+        //         joint.distance = particleDistance;
+        //         joint.dampingRatio = 1;
+        //         joint.frequency = 0;
+        //     }
 
-            if (i === particleNumber - 1) {
-                joint = spheres[1].node.addComponent(cc.DistanceJoint);
-                joint.connectedBody = sphere;
-                joint.distance = particleDistance;
-                joint.dampingRatio = 1;
-                joint.frequency = 0;
-            }
+        //     if (i === particleNumber - 1) {
+        //         joint = spheres[1].node.addComponent(cc.DistanceJoint);
+        //         joint.connectedBody = sphere;
+        //         joint.distance = particleDistance;
+        //         joint.dampingRatio = 1;
+        //         joint.frequency = 0;
+        //     }
 
-            sphere.node.parent = this.node;
-        }
+        //     sphere.node.parent = this.node;
+        // }
 
         this.spheres = spheres;
     },
@@ -95,7 +114,7 @@ cc.Class({
         //创建刚体
         let body = node.addComponent(cc.RigidBody);
         //创建物理碰撞
-        let collider = node.addComponent(cc.PhysicsCircleCollider);
+        let collider = node.addComponent(cc.PhysicsPolygonCollider);
         collider.density = 1;
         collider.restitution = 0.4;
         collider.friction = 0.5;
@@ -129,7 +148,7 @@ cc.Class({
             return this.expandPosition( sphere.node.position );
         });
 
-        points.shift();
+        // points.shift();
 //      获取贝塞尔曲线坐标
         var result = smooth( points );
         var firstControlPoints = result[0];

@@ -45,6 +45,14 @@ cc.Class({
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
+        global.event.on("setActive",this.setActive.bind(this));
+    },
+
+    setActive(result){
+        this.node.active = result;
+    },
+
+    start () {
         var score=0;
         var that = this;
         this.simpleNode.on(cc.Node.EventType.TOUCH_START,function() {
@@ -86,16 +94,6 @@ cc.Class({
                 that.node.active = false;
             }
         },this);
-
-        global.event.on("setActive",this.setActive.bind(this));
-    },
-
-    setActive(result){
-        this.node.active = result;
-    },
-
-    start () {
-
     },
 
     // update (dt) {},
