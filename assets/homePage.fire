@@ -15748,7 +15748,7 @@
         "__id__": 360
       }
     ],
-    "_active": true,
+    "_active": false,
     "_level": 2,
     "_components": [],
     "_prefab": null,
