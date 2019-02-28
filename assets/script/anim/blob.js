@@ -1,6 +1,6 @@
 
 var smooth = require('smooth');
-
+import global from "../global";
 cc.Class({
     extends: cc.Component,
 
@@ -33,8 +33,11 @@ cc.Class({
     },
 
     touchAnimal(event){
-        cc.log("click animal:"+that.particleRadius); 
-        
+        cc.log("click animal:"+this.particleRadius); 
+        global.event.fire("imgClick");
+        //animalDialog.js
+        // global.event.fire("showDialog");
+        global.event.fire("setAnimalID",this.particleRadius);
     },
 
     // use this for initialization

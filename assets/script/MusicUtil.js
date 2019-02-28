@@ -157,6 +157,9 @@ cc.Class({
             case "bg":
                 id = this.playMain();
                 break;
+            case "stopAnimal":
+                this.stopAnimalSound();
+                break;
         }
         return id;
     },
@@ -190,14 +193,18 @@ cc.Class({
     },
 
     playAnimalSound(){
-        this.animalId = cc.audioEngine.playMusic(this.animalPath,false);
+        this.animalId = cc.audioEngine.play(this.animalPath,false,1);
+    },
+
+    stopAnimalSound(){
+        cc.audioEngine.stop(this.animalId);
     },
 
     onLoad(){
         //levelCtrl.js
         global.event.on("btnClick",this.playButtonClick.bind(this));
 
-        global.event.on("btnClick",this.playImgClick.bind(this));
+        global.event.on("imgClick",this.playImgClick.bind(this));
         //homeCtrl.js
         global.event.on("stopMain",this.stopMain.bind(this));
         //level.js
